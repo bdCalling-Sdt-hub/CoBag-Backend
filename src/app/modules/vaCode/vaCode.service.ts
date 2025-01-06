@@ -1,0 +1,85 @@
+import nodemailer from "nodemailer";
+import IVerification from "./vaCode.interface";
+import UserModel from "../user/user.model";
+import verificationCodeModel from "./vaCode.model";
+
+const sendVerificationFromDB = async (payload: Partial<IVerification>) => {
+    try {
+        // Extract email from payload
+        const { email } = payload;
+        console.log(email)
+        if (!email) {
+            throw new Error("Invalid Email");
+        }
+        const user = await UserModel.findOne({ email });
+        if (!user) {
+            throw new Error("User Not Authenticated");
+            
+        }
+        // Generate a random 6-digit verification code
+        const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+
+        // Configure Nodemailer
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: 'sayedhasan973@gmail.com', //sayedhasan973@gmail.com
+                pass: 'xssp ebum kdxf eyvf',//xssp ebum kdxf eyvf
+            },
+        });
+
+        // Email options
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: email,
+            subject: "Your Verification Code",
+            text: `Your verification code is: ${verificationCode}`,
+        };
+
+        // Send the email
+        await transporter.sendMail(mailOptions);
+         // Create the verification record in the database
+         const verificationRecord = {
+            email,
+            verificationCode: verificationCode,
+        };
+        const result = await verificationCodeModel.create(verificationRecord)
+
+        // Respond with success message
+        // res.status(200).json({ message: "Verification email sent", code: verificationCode });
+        return verificationCode;
+    } catch (error) {
+       return error
+    }
+};
+
+const verifyFromDB = async (payload: { verificationCode: string }) => {
+    try {
+        // Destructure verificationCode from the payload
+        const { verificationCode } = payload;
+
+        // Log to debug the received data
+        console.log("Received verificationCode:", verificationCode);
+
+        // Query the database with the verificationCode
+        const result = await verificationCodeModel.find({ verificationCode });
+
+        // Check if no result is found
+        if (!result || result.length === 0) {
+            throw new Error("User Not Authenticated");
+        }
+
+        console.log("Query Result:", result);
+        return result;
+    } catch (error) {
+        console.error("Error:", error);
+        return { error: error };
+    }
+};
+
+
+
+export const   VaCodeService = {
+    sendVerificationFromDB,
+    verifyFromDB,
+}

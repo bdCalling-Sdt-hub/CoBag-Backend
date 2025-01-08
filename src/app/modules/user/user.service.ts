@@ -6,6 +6,10 @@ import config from "../../config";
 import { createToken } from "./user.utils";
 
 const createUserIntoDB = async (userData: TUser): Promise<TUser> => {
+    const user = await UserModel.findOne({email : userData.email})
+    if (user) {
+      throw new Error("User exiest");
+    }
     const newUser = new UserModel(userData);
     return await newUser.save();
 };

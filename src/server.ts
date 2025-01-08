@@ -1,35 +1,43 @@
-import { Server } from 'http';
+// src/server/server.ts
+import express, { Application } from 'express';
+import http from 'http';
 import mongoose from 'mongoose';
 import app from './app';
 import config from './app/config';
 
-let server: Server;
+
+const server: http.Server = http.createServer(app);
+const PORT = config.port || 3000;
+
+// Middleware
+app.use(express.json());
+
+
+
+
 
 async function main() {
   try {
     await mongoose.connect(config.database_url as string);
-
-    server = app.listen(config.port, () => {
-      console.log(`app is listening on port ${config.port}`);
+    server.listen(PORT, () => {
+      console.log(`App is listening on port ${PORT}`);
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
+    process.exit(1);
   }
 }
 
 main();
 
-process.on('unhandledRejection', () => {
-  console.log(`😈 unHandledRejection is detected , shutting down ...`);
+process.on('unhandledRejection', (reason) => {
+  console.error(`Unhandled Rejection: ${reason}`);
   if (server) {
-    server.close(() => {
-      process.exit(1);
-    });
+    server.close(() => process.exit(1));
   }
-  process.exit(1);
 });
 
-process.on('uncaughtException', () => {
-  console.log(`😈 uncaughtException is detected , shutting down ...`);
+process.on('uncaughtException', (err) => {
+  console.error(`Uncaught Exception: ${err.message}`);
   process.exit(1);
 });

@@ -1,0 +1,85 @@
+import { z } from 'zod';
+
+const CreateRouteValidationSchema = z.object({
+  body: z.object({
+    userId: z.string().min(1, 'User ID is required'), // Ensure userId is present
+    transportMode: z.enum(['plane', 'train'], { required_error: 'Transport mode is required' }),
+    transportType: z.enum(['direct', 'withCorrespondence'], { required_error: 'Transport type is required' }),
+    ticket: z.string().optional(),
+    flightNumber: z.string().optional(),
+    departureCity: z.string().min(1, 'Departure city is required'),
+    arrivalCity: z.string().min(1, 'Arrival city is required'),
+    departureDate: z.string().min(1, 'Departure date is required'),
+    arrivalDate: z.string().min(1, 'Arrival date is required'),
+    departureTime: z.string().min(1, 'Departure time is required'),
+    arrivalTime: z.string().min(1, 'Arrival time is required'),
+    availableWeight: z.object({
+      handLuggage: z.number().min(0).optional(),
+      checkedBaggage: z.number().min(0).optional(),
+    }).optional(),
+    courierOptions: z.object({
+      maxPurchaseAmount: z.number().min(0).optional(),
+      message: z.string().optional(),
+    }).optional(),
+  }),
+});
+const UpdateRouteValidationSchema = z.object({
+    body: z.object({
+      userId: z.string().optional(), // Optional during updates
+      transportMode: z.enum(['plane', 'train']).optional(),
+      transportType: z.enum(['direct', 'withCorrespondence']).optional(),
+      ticket: z.string().optional(),
+      flightNumber: z.string().optional(),
+      departureCity: z.string().optional(),
+      arrivalCity: z.string().optional(),
+      departureDate: z.string().optional(),
+      arrivalDate: z.string().optional(),
+      departureTime: z.string().optional(),
+      arrivalTime: z.string().optional(),
+      availableWeight: z
+        .object({
+          handLuggage: z.number().min(0).optional(),
+          checkedBaggage: z.number().min(0).optional(),
+        })
+        .optional(),
+      courierOptions: z
+        .object({
+          maxPurchaseAmount: z.number().min(0).optional(),
+          message: z.string().optional(),
+        })
+        .optional(),
+    }),
+  });
+  const SearchRouteValidationSchema = z.object({
+    body: z.object({
+      userId: z.string().optional(), // Optional during updates
+      transportMode: z.enum(['plane', 'train']).optional(),
+      transportType: z.enum(['direct', 'withCorrespondence']).optional(),
+      ticket: z.string().optional(),
+      flightNumber: z.string().optional(),
+      departureCity: z.string().optional(),
+      arrivalCity: z.string().optional(),
+      departureDate: z.string().optional(),
+      arrivalDate: z.string().optional(),
+      departureTime: z.string().optional(),
+      arrivalTime: z.string().optional(),
+      availableWeight: z
+        .object({
+          handLuggage: z.number().min(0).optional(),
+          checkedBaggage: z.number().min(0).optional(),
+        })
+        .optional(),
+      courierOptions: z
+        .object({
+          maxPurchaseAmount: z.number().min(0).optional(),
+          message: z.string().optional(),
+        })
+        .optional(),
+    }),
+  });
+  export const sellKgRouteValidation = {
+    CreateRouteValidationSchema,
+    UpdateRouteValidationSchema,
+    SearchRouteValidationSchema
+  };
+  

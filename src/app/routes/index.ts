@@ -4,6 +4,7 @@ import { openRoutes } from '../modules/open/open.route';
 import { codeRoutes } from '../modules/vaCode/vaCode.route';
 import { sellKgRoutes } from '../modules/sellKG/sellKG.route';
 import { sendKgRouter } from '../modules/sendKg/sendKg.route';
+import { messageRoutes } from '../modules/chat/chat.route';
 const router = Router();
 
 const moduleRoutes = [
@@ -27,6 +28,10 @@ const moduleRoutes = [
   {
     path: '/send-kg-route',
     route: sendKgRouter,
+  },
+  {
+    path: '/chat',
+    route: messageRoutes,
   },
   
  

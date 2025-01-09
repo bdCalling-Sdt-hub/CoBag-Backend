@@ -13,8 +13,7 @@ const sendVerificationFromDB = async (payload: Partial<IVerification>) => {
         }
         const user = await UserModel.findOne({ email });
         if (!user) {
-            throw new Error("User Not Authenticated");
-            
+            throw new Error("User Not Register In Database ");
         }
         // Generate a random 6-digit verification code
         const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();

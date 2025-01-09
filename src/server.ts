@@ -1,9 +1,11 @@
 // src/server/server.ts
 import express, { Application } from 'express';
 import http from 'http';
+import { Server } from 'socket.io';
 import mongoose from 'mongoose';
 import app from './app';
 import config from './app/config';
+import { socketHelper } from './app/helper/socket';
 
 
 const server: http.Server = http.createServer(app);
@@ -22,6 +24,16 @@ async function main() {
     server.listen(PORT, () => {
       console.log(`App is listening on port ${PORT}`);
     });
+     //socket
+     const io = new Server(server, {
+      pingTimeout: 60000,
+      cors: {
+        origin: '*',
+      },
+    });
+    socketHelper.socket(io);
+    // @ts-ignore
+    global.io = io;
   } catch (err) {
     console.error(err);
     process.exit(1);

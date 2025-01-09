@@ -11,16 +11,43 @@ router.post(
     validateRequest(userValidation.UserSchema),
     userController.createUser
 )
+router.post(
+    '/update/:id',
+    validateRequest(userValidation.UpdateUserValidationSchema),
+    userController.updateUser
+)
+router.get(
+    '/get-all-user',
+    userController.getAllUser
+)
 
 router.post( 
-    '/auth/login',
+    '/login',
     validateRequest(userValidation.LoginValidationSchema),
     userController.loginUser,
   );
 
 router.post( 
-    '/auth/logout',
+    '/logout',
     userController.logout,
+  );
+router.patch( 
+    '/block/:id',
+    userController.blockUser,
+  );
+router.patch( 
+    '/suspend/:id',
+    userController.suspendUser,
+  );
+router.post( 
+    '/change-passs/:email',
+    validateRequest(userValidation.ForgetPasswordValidationSchema),
+    userController.forgetPassword,
+  );
+router.post( 
+    '/reset-passs/:id',
+    validateRequest(userValidation.ResetPasswordValidationSchema),
+    userController.resetPassword,
   );
 
 

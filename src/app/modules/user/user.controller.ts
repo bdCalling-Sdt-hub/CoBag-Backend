@@ -42,6 +42,41 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
     }
 };
 
+const getAllUser = async(req : Request, res: Response, next : NextFunction) => {
+  try {
+    const result =  userService.getAllUserFromDB();
+    if (!result) {
+      throw new Error("Didn't Find Any User");
+    }
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: 'Get All User successfully',
+      data: result
+  });
+  } catch (error) {
+    next(error)
+  }
+}
+const updateUser = async (req: Request, res: Response, next : NextFunction) => {
+  try {
+    const id = req.params
+    const payload = req.body;
+    const result = await userService.updateUserFromDB(id, payload);
+    if (!result) {
+      throw new Error("Update Unsuccessful");
+    }
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: 'Update User successfully',
+      data: result
+  });
+  } catch (error) {
+    return error
+  }
+} 
+
 const loginUser = catchAsync(async (req, res) => {
     console.log(req.body)
     const result = await userService.loginUser(req.body);
@@ -74,8 +109,78 @@ const loginUser = catchAsync(async (req, res) => {
       next(error)
     }
   }
+
+  const blockUser = async (req  : Request, res : Response, next : NextFunction) => {
+    try {
+      const {id} = req.params;
+      
+      const result = await userService.blockUserfromDB(id)
+      res.status(200).json({
+        statusCode: 200,
+        success: true,
+        message: "User Blocked successfully",
+        data: result
+      });
+    } catch (error) {
+      next(error)
+    }
+  }
+  const suspendUser = async (req  : Request, res : Response, next : NextFunction) => {
+    try {
+      const {id} = req.params;
+      
+      const result = await userService.suspendUserfromDB(id)
+      res.status(200).json({
+        statusCode: 200,
+        success: true,
+        message: "User Blocked successfully",
+        data: result
+      });
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  const forgetPassword = async (req: Request, res: Response, next:NextFunction) => {
+    try {
+      const {email} = req.params;
+      const payload = req.body;
+      const result = await userService.forgetPasswordFromDB(payload, email)
+      res.status(200).json({
+        statusCode: 200,
+        success: true,
+        message: "password Update successfully",
+        data: result
+      });
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  const resetPassword = async(req : Request, res: Response, next : NextFunction) => {
+    try {
+      const payload = req.body;
+      const {id } = req.params;
+      const result = await userService.resetPasswordFromDB(payload, id);
+      res.status(200).json({
+        statusCode: 200,
+        success: true,
+        message: "password Reset successfully",
+        data: result
+      });
+     } catch (error) {
+      next(error)
+    }
+  }
+
 export const userController = {
     createUser,
     loginUser, 
-    logout
+    getAllUser,
+    updateUser,
+    logout,
+    blockUser,
+    suspendUser,
+    forgetPassword,
+    resetPassword
 };

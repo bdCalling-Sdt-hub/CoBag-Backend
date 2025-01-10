@@ -62,6 +62,10 @@ const updateUser = async (req: Request, res: Response, next : NextFunction) => {
   try {
     const id = req.params
     const payload = req.body;
+    // If a file is uploaded, add its path to the payload
+    if (req.file) {
+      payload.profileImage = `/uploads/users/${req.file.filename}`;
+    }
     const result = await userService.updateUserFromDB(id, payload);
     if (!result) {
       throw new Error("Update Unsuccessful");

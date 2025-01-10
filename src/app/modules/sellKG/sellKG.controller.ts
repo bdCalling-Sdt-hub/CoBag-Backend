@@ -6,7 +6,11 @@ import { TRoute } from "./sellKG.interface";
 const createSell = async (req : Request, res : Response, next : NextFunction) => {
     try {
         const payload = req.body;
-        const result = await sellKgService.createSellFromDB(payload);
+        if (req.file) {
+            payload.profileImage = `/uploads/ticket/${req.file.filename}`;
+          }
+        console.log(req.file);
+        const result = await sellKgService.createSellFromDB(req.body);
         if (!result) {
             throw new Error("User Not Created Successfully");
         }
@@ -92,10 +96,29 @@ const searchRoute = async (req : Request, res : Response, next : NextFunction) =
         next(error)
     }
 }
+
+const availableForCourier = async (req  : Request, res : Response, next : NextFunction) => {
+    try {
+        const payload = req.body;
+        const result = await sellKgService.getAvailableForCourier(payload)
+        if (!result) {
+            throw new Error("No Route Found");
+        }  
+        res.status(200).json({
+            success: true,
+            statusCode: 200,
+            message: 'Search Result Found',
+            data: result
+        });
+    } catch (error) {
+        next(error)
+    }
+} 
 export const  sellKgController = {
     createSell,
     getAllSellKg,
     updateSellKg,
     deleteFromDB,
-    searchRoute
+    searchRoute,
+    availableForCourier
 } 

@@ -3,7 +3,7 @@ import { TRoute } from './sellKG.interface';
 
 const RouteSchema: Schema = new Schema(
   {
-    userId: { type: Schema.Types.ObjectId, ref: 'User', required: true }, // Reference to the user
+    userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     transportMode: { type: String, enum: ['plane', 'train'], required: true },
     transportType: { type: String, enum: ['direct', 'withCorrespondence'], required: true },
     ticket: { type: String },
@@ -15,8 +15,9 @@ const RouteSchema: Schema = new Schema(
     departureTime: { type: String, required: true },
     arrivalTime: { type: String, required: true },
     handLuggage: { type: Number, default: 0 },
+    maxpurchAmountAdvance: { type: Number, default: 0 },
     checkedBaggage: { type: Number, default: 0 },
-    
+    availableToBeCourier: { type: Boolean, default: false }, // Fixed Boolean type
     courierOptions: {
       maxPurchaseAmount: { type: Number, default: 0 },
       message: { type: String },

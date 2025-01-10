@@ -28,7 +28,11 @@ const getAllUserFromDB =async () => {
 
 const updateUserFromDB = async(payload : Partial<TUser>, id : string) => {
  try {
-    const result = await UserModel.findByIdAndUpdate({_id : id}, payload)
+  const result = await UserModel.findByIdAndUpdate(
+    { _id: id },
+    { $set: payload }, // Use $set to update specific fields
+    { new: true } // Return the updated document
+  );
     if (!result) {
       throw new Error("Profile Not Updated Successfully");
     }

@@ -2,19 +2,26 @@ import  express  from "express";
 import { userController } from "./user.controller";
 import validateRequest from "../../middlewares/validateRequest";
 import { userValidation } from "./user.validation";
+import fileUploadHandler from "../../middlewares/fileUploadHandler";
 
 
 const router = express.Router()
+
+// Define the upload folder
+const UPLOADS_FOLDER = 'uploads/users';
+const upload = fileUploadHandler(UPLOADS_FOLDER);
+
+router.patch(
+  '/update/:id',
+  validateRequest(userValidation.UpdateUserValidationSchema),
+  upload.single('profileImage'),
+  userController.updateUser
+)
 
 router.post(
     '/register',
     validateRequest(userValidation.UserSchema),
     userController.createUser
-)
-router.post(
-    '/update/:id',
-    validateRequest(userValidation.UpdateUserValidationSchema),
-    userController.updateUser
 )
 router.get(
     '/get-all-user',

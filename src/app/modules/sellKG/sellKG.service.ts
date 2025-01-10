@@ -96,6 +96,40 @@ const searchRouteFromDB = async (payload: Partial<TRoute>) => {
     }
   };
   
+  const getAvailableForCourier = async (payload: TRoute) => {
+    try {
+      // Build conditions for the query
+      const conditions: any[] = [];
+  
+      // Ensure both departureCity and arrivalCity are provided
+      if (payload.departureCity && payload.arrivalCity) {
+        conditions.push(
+          { departureCity: payload.departureCity },
+          { arrivalCity: payload.arrivalCity }
+        )
+  
+        // If both departureCity and arrivalCity exist, consider additional optional fields
+        if (payload.departureTime) {
+          conditions.push({ departureTime: payload.departureTime });
+        }
+        if (payload.arrivalTime) {
+          conditions.push({ arrivalTime: payload.arrivalTime });
+        }
+        if (payload.maxpurchAmountAdvance) {
+          conditions.push({ maxpurchAmountAdvance: { $gte: payload.maxpurchAmountAdvance } });
+        }
+      } else {
+        console.log('departureCity and arrivalCity are required for further filtering.');
+        return []; // Return an empty array if the mandatory fields are not met
+      }
+  
+      // Use $and to enforce strict matching for departureCity and arrivalCity
+      const result = await SellKgModel.find({ $and: conditions });
+      return result;
+    } catch (error) {
+      return error;
+    }
+  };
   
 
 export default searchRouteFromDB;
@@ -104,6 +138,7 @@ export const sellKgService = {
     createSellFromDB,
     getAllSellKgFromDB,
     updateSellKgFromDB,
+    getAvailableForCourier,
     deleteSellFromDB,
     searchRouteFromDB
 

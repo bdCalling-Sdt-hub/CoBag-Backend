@@ -19,7 +19,8 @@ app.use(cors());
 
 // application routes
 app.use('', router);
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// Static folder to serve uploaded files
+app.use('/uploads', express.static('uploads'));
 
 // const test = async (req: Request, res: Response) => {
 //   const a = 10;

@@ -6,6 +6,7 @@ export type TUser = {
     lastName: string;
     email: string;
     password: string;
+    profileImage: string;
     phone: string;
     role: 'admin' | 'user' | 'super_admin';
     subscription: boolean;

@@ -11,6 +11,18 @@ const UserSchema: Schema = new Schema(
       type: String,
       default: '/uploads/users/user.png'
     },
+    ethanDocuments: {
+      type: String,
+      default: '/uploads/ethanDocuments/user.png'
+    },
+    proofOfAddress: {
+      type: String,
+      default: '/uploads/proofOfAddress/user.png'
+    },
+    RIB: {
+      type: String,
+      default: '/uploads/RIB/user.png'
+    },
     phone: { type: String, required: true },
     subscription: { type: Boolean, default: false },
     role: {

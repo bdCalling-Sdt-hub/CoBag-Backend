@@ -7,6 +7,9 @@ export type TUser = {
     email: string;
     password: string;
     profileImage: string;
+    ethanDocuments: string;
+    proofOfAddress: string;
+    RIB: string;
     phone: string;
     role: 'admin' | 'user' | 'super_admin';
     subscription: boolean;

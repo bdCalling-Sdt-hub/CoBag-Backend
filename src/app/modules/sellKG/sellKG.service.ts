@@ -138,7 +138,7 @@ export const sellKgService = {
     createSellFromDB,
     getAllSellKgFromDB,
     updateSellKgFromDB,
-    getAvailableForCourier,
+    getAvailableForCourier, 
     deleteSellFromDB,
     searchRouteFromDB
 

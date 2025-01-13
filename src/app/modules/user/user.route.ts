@@ -34,7 +34,10 @@ router.patch(
   ]),
   userController.updateUser
 )
-
+router.get(
+  '/get-user/:id',
+  userController.getOneUser
+)
 router.post(
   '/register',
   validateRequest(userValidation.UserSchema),

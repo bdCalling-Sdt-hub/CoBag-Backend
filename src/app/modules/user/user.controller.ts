@@ -7,6 +7,7 @@ import { userService } from './user.service';
 import { NextFunction, Request, Response } from 'express';
 import UserModel from './user.model';
 import AppError from '../../errors/AppError';
+import { error } from 'console';
 
 export const createUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
@@ -58,6 +59,25 @@ const getAllUser = async (req: Request, res: Response, next: NextFunction) => {
     next(error)
   }
 }
+
+const getOneUser = async(req : Request, res : Response, next : NextFunction) => {
+  try {
+    const {id} = req.params
+    const result = await userService.getOneUserByIdFromDB(id);
+    if (!result) {
+      throw new Error("Get a Single User");
+    }
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: 'User Get successfully',
+      data: result
+    });
+  } catch (error) {
+    next(error)
+  }
+}
+
 const updateUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params
@@ -196,5 +216,6 @@ export const userController = {
   blockUser,
   suspendUser,
   forgetPassword,
-  resetPassword
+  resetPassword, 
+  getOneUser
 };

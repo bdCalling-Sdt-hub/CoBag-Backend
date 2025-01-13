@@ -26,6 +26,18 @@ const getAllUserFromDB = async () => {
   }
 }
 
+const getOneUserByIdFromDB = async (id: string) => {
+  try {
+    const result = await UserModel.findById({_id  : id});
+    if (!result) {
+      throw new Error("User ID Get Successfully");
+    }
+    return result;
+  } catch (error) {
+    return error
+  }
+} 
+
 const updateUserFromDB = async (id: string, payload: Partial<TUser>,) => {
 
   console.log(id,payload)
@@ -164,6 +176,7 @@ export const userService = {
   updateUserFromDB,
   getAllUserFromDB,
   blockUserfromDB,
+  getOneUserByIdFromDB,
   suspendUserfromDB,
   forgetPasswordFromDB,
   resetPasswordFromDB

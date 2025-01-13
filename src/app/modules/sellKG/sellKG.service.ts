@@ -63,11 +63,11 @@ const searchRouteFromDB = async (payload: Partial<TRoute>) => {
       if (payload.transportMode) {
         conditions.push({ transportMode: payload.transportMode });
       }
-      if (payload.departureCity) {
-        conditions.push({ departureCity: payload.departureCity });
-      }
-      if (payload.arrivalCity) {
-        conditions.push({ arrivalCity: payload.arrivalCity });
+      if (payload.departureCity && payload.arrivalCity) {
+        conditions.push({
+          departureCity : payload.departureCity,
+          arrivalCity : payload.arrivalCity
+        })
       }
       if (payload.departureDate) {
         conditions.push({ departureDate: payload.departureDate });

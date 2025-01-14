@@ -6,6 +6,7 @@ import { sellKgRoutes } from '../modules/sellKG/sellKG.route';
 import { sendKgRouter } from '../modules/sendKg/sendKg.route';
 import { messageRoutes } from '../modules/chat/chat.route';
 import { paymentRoute } from '../modules/payment/payment.route';
+import { otpRoute } from '../modules/sendOtp/sendOtp.route';
 const router = Router();
 
 const moduleRoutes = [
@@ -37,6 +38,10 @@ const moduleRoutes = [
   {
     path: '/payment',
     route: paymentRoute,
+  },
+  {
+    path: '/send',
+    route: otpRoute,
   },
   
 ];

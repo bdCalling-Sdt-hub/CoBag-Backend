@@ -1,9 +1,9 @@
 import express from 'express';
-import { createCheckoutSessionHandler, webhookHandler } from './payment.controller';
+import { paymentService } from './payment.controller';
 
 const router = express.Router();
 
-router.post('/create-checkout-session', createCheckoutSessionHandler);
-router.post('/webhook/stripe', express.raw({ type: 'application/json' }), webhookHandler);
+router.post('/webhook', paymentService.webhookHandler);
+router.post('/create-checkout-session', paymentService.createCheckoutSessionHandler);
 
 export const paymentRoute = router;

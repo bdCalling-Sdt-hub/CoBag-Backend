@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import {  Request, Response } from 'express';
 import { createCheckoutSession, handleWebhookEvent } from './payment.service';
 import Stripe from 'stripe';
 
@@ -6,6 +6,7 @@ export const createCheckoutSessionHandler = async (req: Request, res: Response) 
   const { amount, currency } = req.body;
 
   try {
+    console.log("body controller: ===== ",req.body)    
     const session = await createCheckoutSession(amount, currency);
     res.status(200).json({ success: true, sessionId: session.id, url: session.url });
   } catch (error: any) {
@@ -17,15 +18,13 @@ export const createCheckoutSessionHandler = async (req: Request, res: Response) 
 export const webhookHandler = async (req: Request, res: Response) => {
   const sig = req.headers['stripe-signature'] as string;
   const signingSecret = process.env.STRIPE_WEBHOOK_SECRET || '';
-
   let event: Stripe.Event;
-
   try {
+    // console.log("==req==>", req.body);
     event = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-      apiVersion: '2022-11-15',
+      apiVersion: '2024-06-20',
     }).webhooks.constructEvent(req.body, sig, signingSecret);
 
-    console.log(req.body,event)
     await handleWebhookEvent(event);
     res.status(200).send({ success: true });
   } catch (error: any) {
@@ -35,7 +34,7 @@ export const webhookHandler = async (req: Request, res: Response) => {
 };
 
 
-const paymentService = {
+export const paymentService = {
   createCheckoutSessionHandler,
   webhookHandler
 }

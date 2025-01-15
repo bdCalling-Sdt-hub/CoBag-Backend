@@ -1,6 +1,4 @@
 import Stripe from 'stripe';
-import PaymentModel from './payment.model';
-import { TPayment } from './paymemt.interface';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', { apiVersion: '2024-06-20' });
 
@@ -24,12 +22,4 @@ export const createCheckoutSession = async (amount: number, currency: string) =>
   return session;
 };
 
-export const handleWebhookEvent = async (payload : TPayment) => {
-  try {
-    const payment = new PaymentModel(payload);
-        await payment.save();
-        console.log('Payment saved successfully:', payment);
-  } catch (error) {
-    return error
-  }
-};
+

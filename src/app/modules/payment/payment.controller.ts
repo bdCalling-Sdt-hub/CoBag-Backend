@@ -1,7 +1,8 @@
 import {  NextFunction, Request, Response } from 'express';
-import { createCheckoutSession, handleWebhookEvent } from './payment.service';
+import { createCheckoutSession } from './payment.service';
 import Stripe from 'stripe';
 import stripe from 'stripe';
+import PaymentModel from './payment.model';
 
 export const createCheckoutSessionHandler = async (req: Request, res: Response, next : NextFunction) => {
   const { amount, currency } = req.body;
@@ -37,7 +38,16 @@ export const webhookHandler = async (req: Request, res: Response, next: NextFunc
       };
 
       console.log('Saving Payment Data:', paymentData);
-      await handleWebhookEvent(paymentData);
+
+      try {
+        const payment = new PaymentModel(paymentData);
+        await payment.save();
+        console.log('Payment saved successfully:', payment);
+      } catch (dbError) {
+        console.error('Database save error:', dbError);
+        res.status(500).json({ error: 'Database save error' });
+        return;
+      }
     } else {
       console.warn(`Unhandled event type: ${event.type}`);
     }

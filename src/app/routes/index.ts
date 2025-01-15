@@ -7,6 +7,8 @@ import { sendKgRouter } from '../modules/sendKg/sendKg.route';
 import { messageRoutes } from '../modules/chat/chat.route';
 import { paymentRoute } from '../modules/payment/payment.route';
 import { otpRoute } from '../modules/sendOtp/sendOtp.route';
+import { platformRoute } from '../modules/adminRequirments/platform/platform.route';
+import { promoCodeRoute } from '../modules/adminRequirments/promoCode/promoCode.route';
 const router = Router();
 
 const moduleRoutes = [
@@ -42,6 +44,14 @@ const moduleRoutes = [
   {
     path: '/send',
     route: otpRoute,
+  },
+  {
+    path: '/platform',
+    route: platformRoute,
+  },
+  {
+    path: '/promo-code',
+    route: promoCodeRoute,
   },
   
 ];

@@ -20,6 +20,17 @@ const createMessage = async (req: Request, res: Response, next: NextFunction) =>
             message: 'Message sent successfully',
             data: message
         })
+        // Emit notification to the receiver
+  const receiverSocketId = payload.receiverId;
+  const eventNameNotification = "new-message"
+        const notificationEvent = `${eventNameNotification}::${receiverSocketId}`
+     // @ts-ignore
+    io.emit(notificationEvent, {
+      from: payload.senderId,
+      message,
+      timestamp: new Date(),
+    });
+  
 
         res.status(200).json({
             success: true,

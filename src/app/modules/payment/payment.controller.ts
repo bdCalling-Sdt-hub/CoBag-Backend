@@ -1,8 +1,9 @@
-import {  Request, Response } from 'express';
+import {  NextFunction, Request, Response } from 'express';
 import { createCheckoutSession, handleWebhookEvent } from './payment.service';
 import Stripe from 'stripe';
+import stripe from 'stripe';
 
-export const createCheckoutSessionHandler = async (req: Request, res: Response) => {
+export const createCheckoutSessionHandler = async (req: Request, res: Response, next : NextFunction) => {
   const { amount, currency } = req.body;
 
   try {
@@ -15,21 +16,36 @@ export const createCheckoutSessionHandler = async (req: Request, res: Response) 
   }
 };
 
-export const webhookHandler = async (req: Request, res: Response) => {
+export const webhookHandler = async (req: Request, res: Response, next: NextFunction) => {
   const sig = req.headers['stripe-signature'] as string;
   const signingSecret = process.env.STRIPE_WEBHOOK_SECRET || '';
   let event: Stripe.Event;
-  try {
-    // console.log("==req==>", req.body);
-    event = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-      apiVersion: '2024-06-20',
-    }).webhooks.constructEvent(req.body, sig, signingSecret);
 
-    await handleWebhookEvent(event);
-    res.status(200).send({ success: true });
-  } catch (error: any) {
-    console.error('Webhook signature verification failed:', error.message);
-    res.status(400).send(`Webhook Error: ${error.message}`);
+  try {
+    event = stripe.webhooks.constructEvent(req.body, sig, signingSecret);
+
+    if (event.type === 'checkout.session.completed') {
+      const session = event.data.object as Stripe.Checkout.Session;
+
+      const paymentData = {
+        amount: session.amount_total != null ? session.amount_total / 100 : 0,
+        currency: session.currency || 'unknown',
+        stripeSessionId: session.id || '',
+        stripePaymentIntentId: session.payment_intent as string || '',
+        status: 'completed',
+        stripeEvent: event, // Store as JSON object
+      };
+
+      console.log('Saving Payment Data:', paymentData);
+      await handleWebhookEvent(paymentData);
+    } else {
+      console.warn(`Unhandled event type: ${event.type}`);
+    }
+
+    res.json({ received: true });
+  } catch (err) {
+    console.error('Webhook signature verification failed:', err);
+    res.status(400).send(`Webhook Error: ${err}`);
   }
 };
 

@@ -4,4 +4,5 @@ export interface TPayment {
   stripeSessionId?: string; // Stripe Checkout Session ID
   stripePaymentIntentId?: string; // Stripe PaymentIntent ID
   status: string; // Payment status (e.g., "pending", "succeeded")
+  stripeEvent: any;
 }

@@ -8,6 +8,7 @@ const PaymentSchema: Schema = new Schema(
     stripeSessionId: { type: String },
     stripePaymentIntentId: { type: String },
     status: { type: String, default: 'pending' }, // Default status
+    stripeEvent: { type: Schema.Types.Mixed }, // Allows storing JSON objects
   },
   {
     timestamps: true,

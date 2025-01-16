@@ -9,6 +9,7 @@ import { paymentRoute } from '../modules/payment/payment.route';
 import { otpRoute } from '../modules/sendOtp/sendOtp.route';
 import { platformRoute } from '../modules/adminRequirments/platform/platform.route';
 import { promoCodeRoute } from '../modules/adminRequirments/promoCode/promoCode.route';
+import { coBagSkyRouter } from '../modules/adminRequirments/coBagSky/coBagSky.route';
 const router = Router();
 
 const moduleRoutes = [
@@ -52,6 +53,10 @@ const moduleRoutes = [
   {
     path: '/promo-code',
     route: promoCodeRoute,
+  },
+  {
+    path: '/subscription',
+    route: coBagSkyRouter,
   },
   
 ];

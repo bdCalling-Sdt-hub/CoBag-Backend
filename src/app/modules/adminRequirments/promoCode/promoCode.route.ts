@@ -17,6 +17,7 @@ router.get(
 )
 router.patch(
     "/update/:id",
+    validateRequest(promoCodeValidation.updatePromoCodeSchema),
     promoCodeController.updateProme
 )
 

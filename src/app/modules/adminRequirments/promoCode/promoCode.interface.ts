@@ -3,5 +3,6 @@ export type TPromoCode = {
     promoCode: string;
     discountPercentage: number;
     usageLimitPerUser: number;
+    isActive : boolean,
     expirationDate: Date;
   }

@@ -6,6 +6,7 @@ const PromoCodeSchema: Schema = new Schema({
     promoCode: { type: String, required: true },
     discountPercentage: { type: Number, required: true, min: 0, max: 100 },
     usageLimitPerUser: { type: Number, required: true, min: 1 },
+    isActive: { type: Boolean , default : true},
     expirationDate: { type: Date, required: true },
   });
   

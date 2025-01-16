@@ -45,8 +45,7 @@ const sendVerificationFromDB = async (payload: Partial<IVerification>) => {
         const result = await verificationCodeModel.create(verificationRecord)
 
         // Respond with success message
-        // res.status(200).json({ message: "Verification email sent", code: verificationCode });
-        return verificationCode;
+        return result;
     } catch (error) {
        return error
     }

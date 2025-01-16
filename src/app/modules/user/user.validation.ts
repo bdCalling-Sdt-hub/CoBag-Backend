@@ -16,6 +16,15 @@ const UserSchema = z.object({
   }),
 });
 
+const AdminCreateAdminSchema = z.object({
+  body: z.object({
+    email: z.string().email("Invalid email address"),
+    password: z.string().min(6, "Password must be at least 6 characters long"),
+    role: z.enum(["admin", "user", "super_admin"]).default("user"),
+    message: z.string().optional(),
+  }),
+});
+
 const UpdateUserValidationSchema = z.object({
   body: z.object({
     firstName: z.string().min(1, "First name is required").optional(),
@@ -58,5 +67,6 @@ export const userValidation = {
     LoginValidationSchema,
     UpdateUserValidationSchema,
     ForgetPasswordValidationSchema,
-    ResetPasswordValidationSchema
+    ResetPasswordValidationSchema,
+    AdminCreateAdminSchema
 };

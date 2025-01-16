@@ -76,6 +76,11 @@ router.post(
   validateRequest(userValidation.ResetPasswordValidationSchema),
   userController.resetPassword,
 );
+router.post(
+  '/make-admin',
+  // validateRequest(userValidation.AdminCreateAdminSchema),
+  userController.makeAdmin,
+);
 
 
 

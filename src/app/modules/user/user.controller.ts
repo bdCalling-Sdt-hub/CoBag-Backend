@@ -60,9 +60,9 @@ const getAllUser = async (req: Request, res: Response, next: NextFunction) => {
   }
 }
 
-const getOneUser = async(req : Request, res : Response, next : NextFunction) => {
+const getOneUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const {id} = req.params
+    const { id } = req.params
     const result = await userService.getOneUserByIdFromDB(id);
     if (!result) {
       throw new Error("Get a Single User");
@@ -82,20 +82,27 @@ const updateUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params
     const payload = req.body;
-    
-    // return console.log("Request : ", req.files)
-    // If a file is uploaded, add its path to the payload
-    if (req.file?.filename === "profileImage") {
-      payload.profileImage = `/uploads/users/${req.file.filename}`;
+    const files = req.files as {
+      profileImage?: { filename: string }[];
+      ethanDocuments?: { filename: string }[];
+      proofOfAddress?: { filename: string }[];
+      RIB?: { filename: string }[];
+    };
+
+    if (files?.profileImage && files.profileImage[0]?.filename) {
+      payload.profileImage = `/uploads/users/${files.profileImage[0].filename}`;
     }
-    if (req.file?.filename === "ethanDocuments") {
-      payload.ethanDocuments = `/uploads/users/${req.file.filename}`;
+
+    if (files?.ethanDocuments && files.ethanDocuments[0]?.filename) {
+      payload.ethanDocuments = `/uploads/users/${files.ethanDocuments[0].filename}`;
     }
-    if (req.file?.filename === "proofOfAddress") {
-      payload.proofOfAddress = `/uploads/users/${req.file.filename}`;
+
+    if (files?.proofOfAddress && files.proofOfAddress[0]?.filename) {
+      payload.proofOfAddress = `/uploads/users/${files.proofOfAddress[0].filename}`;
     }
-    if (req.file?.filename === "RIB") {
-      payload.RIB = `/uploads/users/${req.file.filename}`;
+
+    if (files?.RIB && files.RIB[0]?.filename) {
+      payload.RIB = `/uploads/users/${files.RIB[0].filename}`;
     }
     const result = await userService.updateUserFromDB(id, payload);
     if (!result) {
@@ -207,6 +214,24 @@ const resetPassword = async (req: Request, res: Response, next: NextFunction) =>
   }
 }
 
+const makeAdmin = async (req : Request, res : Response, next : NextFunction) => {
+  try {
+    const payload = req.body;
+    const result = await userService.makeAdminFromDB(payload)
+    if (!result) {
+      throw new Error("Make Admin Failed");
+    }
+    res.status(200).json({
+      statusCode: 200,
+      success: true,
+      message: "Make Admin successfully Done",
+      data: result
+    });
+  } catch (error) {
+    next(error)
+  }
+}
+
 export const userController = {
   createUser,
   loginUser,
@@ -216,6 +241,7 @@ export const userController = {
   blockUser,
   suspendUser,
   forgetPassword,
-  resetPassword, 
-  getOneUser
+  resetPassword,
+  getOneUser,
+  makeAdmin
 };

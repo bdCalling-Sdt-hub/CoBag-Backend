@@ -11,6 +11,7 @@ export type TUser = {
     proofOfAddress: string;
     RIB: string;
     phone: string;
+    message?: string;
     role: 'admin' | 'user' | 'super_admin';
     subscription: boolean;
     isBlocked: boolean; // Added field

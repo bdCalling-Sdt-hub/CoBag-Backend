@@ -5,6 +5,7 @@ const RouteSchema: Schema = new Schema(
   {
     userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     transportMode: { type: String, enum: ['plane', 'train'], required: true },
+    Size: { type: String, enum: ['small', 'medium', 'large'] },
     transportType: { type: String, enum: ['direct', 'withCorrespondence'], required: true },
     ticket: { type: String },
     flightNumber: { type: String },
@@ -22,6 +23,8 @@ const RouteSchema: Schema = new Schema(
       maxPurchaseAmount: { type: Number, default: 0 },
       message: { type: String },
     },
+    totalSpace : { type: Number, default: 0 }, 
+    price : { type: Number, default: 0 }, 
   },
   {
     timestamps: true,

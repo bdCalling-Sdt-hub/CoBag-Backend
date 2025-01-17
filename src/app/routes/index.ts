@@ -10,6 +10,8 @@ import { otpRoute } from '../modules/sendOtp/sendOtp.route';
 import { platformRoute } from '../modules/adminRequirments/platform/platform.route';
 import { promoCodeRoute } from '../modules/adminRequirments/promoCode/promoCode.route';
 import { coBagSkyRouter } from '../modules/adminRequirments/coBagSky/coBagSky.route';
+import { generalRouter } from '../modules/adminRequirments/general/general.route';
+import { reviewRouter } from '../modules/review/review.route';
 const router = Router();
 
 const moduleRoutes = [
@@ -57,6 +59,14 @@ const moduleRoutes = [
   {
     path: '/subscription',
     route: coBagSkyRouter,
+  },
+  {
+    path: '/general',
+    route: generalRouter,
+  },
+  {
+    path: '/review',
+    route: reviewRouter,
   },
   
 ];

@@ -2,6 +2,7 @@ export type TRoute = {
   _id?: string;
   userId: string; // Reference to the user
   transportMode: 'plane' | 'train';
+  size: 'small' | 'medium' | 'large';
   transportType: 'direct' | 'withCorrespondence';
   ticket: string; // URL or file reference
   flightNumber?: string;
@@ -19,6 +20,8 @@ export type TRoute = {
     maxPurchaseAmount?: number;
     message?: string;
   };
+  price?: number; 
+  totalSpace?: number;
   createdAt?: Date;
   updatedAt?: Date;
 };

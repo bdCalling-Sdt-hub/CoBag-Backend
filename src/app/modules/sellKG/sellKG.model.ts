@@ -25,6 +25,8 @@ const RouteSchema: Schema = new Schema(
     },
     totalSpace : { type: Number, default: 0 }, 
     price : { type: Number, default: 0 }, 
+    isTwentyPercent: { type: Boolean },
+    isEightyPercent: { type: Boolean },
   },
   {
     timestamps: true,

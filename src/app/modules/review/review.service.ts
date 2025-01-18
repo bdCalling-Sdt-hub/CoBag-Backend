@@ -97,6 +97,6 @@ export const reviewSercive = {
     getAllReviewFromDB,
     updateReviewIntoDB,
     deleteReview,
-    reviewAvaregeForSingleUserFromDB,
+    reviewAvaregeForSingleUserFromDB,  
     getReviewByIdFromDB
 }

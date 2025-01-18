@@ -1,9 +1,15 @@
 import express from 'express';
-import { paymentService, webhookHandler } from './payment.controller';
+import { paymentController, webhookHandler } from './payment.controller';
+import validateRequest from '../../middlewares/validateRequest';
+import { paymentValidation } from './payment.validation';
 
 const router = express.Router();
 
-router.post('/create-checkout-session', paymentService.createCheckoutSessionHandler);
+router.post(
+    '/create-checkout-session',
+    validateRequest(paymentValidation.PaymentSchema),
+    paymentController.createCheckoutSessionHandler
+    );
 router.post(
     '/webhook/stripe',
     // Stripe requires the raw body to construct the event

@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 const CreateRouteValidationSchema = z.object({
   body: z.object({
-    userId: z.string().min(1, 'User ID is required'), // Ensure userId is present
+    userId: z.string(), // Ensure userId is present
     transportMode: z.enum(['plane', 'train'], { required_error: 'Transport mode is required' }),
     size: z.enum(['small', 'medium', 'large']),
     transportType: z.enum(['direct', 'withCorrespondence'], { required_error: 'Transport type is required' }),
@@ -20,6 +20,8 @@ const CreateRouteValidationSchema = z.object({
     checkedBaggage: z.string().min(0).optional(),
     totalSpace : z.number().optional(),
     price : z.number().optional(),
+    isTwentyPercent : z.boolean().optional(),
+    isEightyPercent : z.boolean().optional(),
     courierOptions: z
       .object({
         maxPurchaseAmount: z.string().min(0).optional(),

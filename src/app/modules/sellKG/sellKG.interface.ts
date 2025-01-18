@@ -20,6 +20,8 @@ export type TRoute = {
     maxPurchaseAmount?: number;
     message?: string;
   };
+  isTwentyPercent ?: boolean, 
+  isEightyPercent ?: boolean,
   price?: number; 
   totalSpace?: number;
   createdAt?: Date;

@@ -16,6 +16,8 @@ export type TUser = {
     subscription: boolean;
     isBlocked: boolean; // Added field
     isSuspend: boolean; // Added field
+    isTwentyPercent ?: boolean, 
+    isSubscription?: boolean,  
     createdAt?: Date;
     updatedAt?: Date;
 }

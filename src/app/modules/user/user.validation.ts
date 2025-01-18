@@ -11,6 +11,8 @@ const UserSchema = z.object({
     subscription: z.boolean().optional(),
     isBlocked: z.string(), // Added field 
     isSuspend: z.string(), // Added field 
+    isTwentyPercent : z.boolean().optional(),
+    isSubscription : z.boolean().optional(),
     createdAt: z.date().optional(),
     updatedAt: z.date().optional(),
   }),

@@ -16,24 +16,6 @@ const createSellFromDB = async (payload: TRoute) => {
     // Get the admin-set price (assuming only one document exists in the PlatformModel collection)
     const adminSetPrice = await PlatformModel.findOne({});
     console.log(adminSetPrice);
-    if (!adminSetPrice) {
-      throw new Error("Admin settings not found.");
-    }
-    if (payload.transportMode === "plane") {
-      const totalPrice = adminSetPrice.purchaseKilosAirplane * payload.totalSpace;
-      payload.price = totalPrice;
-    } else if (payload.transportMode === "train") {
-      if (payload.size === "small") {
-        const totalPrice = adminSetPrice.train.small;
-        payload.price = totalPrice;
-      } else if (payload.size === "medium") {
-        const totalPrice = adminSetPrice.train.medium;
-        payload.price = totalPrice;
-      } else if (payload.size === "large") {
-        const totalPrice = adminSetPrice.train.large;
-        payload.price = totalPrice;
-      }
-    }
     // Create the record in the database
     const result = await SellKgModel.create(payload);
     if (!result) {

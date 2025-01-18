@@ -29,6 +29,8 @@ const UserSchema: Schema = new Schema(
     },
     isBlocked: { type: Boolean, default: false }, // Added field
     isSuspend: { type: Boolean, default: false }, // Added field
+    isTwentyPercent: { type: Boolean },
+    isSubscription : {type : Boolean},
   },
   {
     timestamps: true,

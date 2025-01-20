@@ -4,10 +4,15 @@ import { VaCodeService } from "./vaCode.service";
 
 const sendVerification = async(req : Request, res : Response, next : NextFunction) => {
     try {
-        const payload = req.body
+        let email;
+        if (req.body) {
+             email = req.body
+        } else if (req.params) {
+             email = req.params;
+        }
         // console.log("controller")
         
-        const result = VaCodeService.sendVerificationFromDB(payload);
+        const result = VaCodeService.sendVerificationFromDB(email);
         if (!result) {
             throw new Error("Something went wrong");
         }

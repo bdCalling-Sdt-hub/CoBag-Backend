@@ -13,9 +13,6 @@ const createSellFromDB = async (payload: TRoute) => {
     }
     // Calculate totalSpace
     payload.totalSpace = handLuggage + checkedBaggage;
-    // Get the admin-set price (assuming only one document exists in the PlatformModel collection)
-    const adminSetPrice = await PlatformModel.findOne({});
-    console.log(adminSetPrice);
     // Create the record in the database
     const result = await SellKgModel.create(payload);
     if (!result) {

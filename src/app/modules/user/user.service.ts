@@ -68,7 +68,7 @@ const loginUser = async (payload: TLoginUser) => {
     console.log("user 2", user._id)
     //checking if the password is correct
 
-    if (!(user?.password === password)) {
+    if (user?.password !== password) {
       throw new Error("password didn't matched")
     }
     if (!(user?.email === email)) {

@@ -8,27 +8,32 @@ import express, { Application } from 'express';
 import globalErrorHandler from './app/middlewares/globalErrorhandler';
 import notFound from './app/middlewares/notFound';
 import router from './app/routes';
-import path from 'path';
 
 const app: Application = express();
 
 //parsers
 app.use(
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ): void => {
-      if (req.originalUrl === '/payment/webhook/stripe') {
-        next();
-      } else {
-        express.json()(req, res, next);
-      }
+  (
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ): void => {
+    if (req.originalUrl === '/payment/webhook/stripe') {
+      next();
+    } else {
+      express.json()(req, res, next);
     }
-  );
+  }
+);
+app.use(cors({
+  origin: '*',
+  credentials:true
+}));
+
+
 // app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
+
 
 
 // app.post(
@@ -39,7 +44,7 @@ app.use(cors());
 //         const sig = req.headers['stripe-signature'] as string;
 //         const signingSecret = process.env.STRIPE_WEBHOOK_SECRET || '';
 //       let event: Stripe.Event;
-  
+
 //       try {
 //         event = stripe.webhooks.constructEvent(req.body, sig, signingSecret);
 //       } catch (err) {
@@ -48,10 +53,10 @@ app.use(cors());
 //         res.status(400).send(`Webhook Error: ${err}`);
 //         return;
 //       }
-  
+
 //       // Successfully constructed event
 //       console.log('✅ Success:', event.id);
-  
+
 //       // Cast event data to Stripe object
 //       if (event.type === 'payment_intent.succeeded') {
 //         const stripeObject: Stripe.PaymentIntent = event.data
@@ -63,7 +68,7 @@ app.use(cors());
 //       } else {
 //         console.warn(`🤷‍♀️ Unhandled event type: ${event.type}`);
 //       }
-  
+
 //       // Return a response to acknowledge receipt of the event
 //       res.json({received: true});
 //     }

@@ -2,11 +2,14 @@ import express from 'express';
 import { paymentController, webhookHandler } from './payment.controller';
 import validateRequest from '../../middlewares/validateRequest';
 import { paymentValidation } from './payment.validation';
+import { USER_ROLE } from '../user/user.constant';
+import auth from '../../middlewares/auth';
 
 const router = express.Router();
 
 router.post(
     '/create-checkout-session',
+    auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.supar_admin),
     validateRequest(paymentValidation.PaymentSchema),
     paymentController.createCheckoutSessionHandler
     );

@@ -27,9 +27,6 @@ async function main() {
      //socket
      const io = new Server(server, {
       pingTimeout: 60000,
-      cors: {
-        origin: '*',
-      },
     });
     socketHelper.socket(io);
     // @ts-ignore

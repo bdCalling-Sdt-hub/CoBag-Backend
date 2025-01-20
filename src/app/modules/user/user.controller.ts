@@ -119,10 +119,13 @@ const updateUser = async (req: Request, res: Response, next: NextFunction) => {
   }
 }
 
-const loginUser = catchAsync(async (req, res) => {
+const loginUser = catchAsync(async (req : Request, res : Response, next : NextFunction) => {
   const result = await userService.loginUser(req.body);
   const { email } = req.body;
   const user = await UserModel.findOne({ email });
+  if (!result) {
+    throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
+  }
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
   }

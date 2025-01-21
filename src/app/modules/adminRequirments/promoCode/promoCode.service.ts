@@ -3,19 +3,17 @@ import PromoCodeModel from "./promoCode.model"
 
 
 const createPromoCodeFromDB = async (payload : TPromoCode) => {
-    try {
+    
         const result = await PromoCodeModel.create(payload);
         if (!result) {
             throw new Error("Promo Code not Created");
         }
         return result;
-    } catch (error) {
-        return error
-    }
+    
 }
 
 const getAllPromoCodeFromDB = async () => {
-    try {
+    
       const currentDate = new Date();
   
       // Find and update expired promo codes in a single query
@@ -32,22 +30,17 @@ const getAllPromoCodeFromDB = async () => {
       }
   
       return activePromoCodes;
-    } catch (error) {
-      console.error("Error in getAllPromoCodeFromDB:", error);
-      throw new Error("Failed to fetch promo codes.");
-    }
+   
   };
   
 const updatePromoCode = async( id : string, payload : TPromoCode) => {
-    try {
+   
         const result = await PromoCodeModel.findByIdAndUpdate(id, payload, {new : true});
         if (!result) {
             throw new Error("Update Unsuccessful");
         }
         return result;
-    } catch (error) {
-        return error
-    }
+    
 }
 export const promoCodeService = {
     createPromoCodeFromDB,

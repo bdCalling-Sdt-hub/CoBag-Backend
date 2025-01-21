@@ -4,7 +4,7 @@ import SellKgModel from "./sellKG.model"
 
 
 const createSellFromDB = async (payload: TRoute) => {
-  try {
+  
     // Validate, convert to numbers, and provide default values if undefined
     const handLuggage = Number(payload.handLuggage ?? 0); // Convert to number, default to 0 if undefined
     const checkedBaggage = Number(payload.checkedBaggage ?? 0); // Convert to number, default to 0 if undefined
@@ -19,28 +19,24 @@ const createSellFromDB = async (payload: TRoute) => {
       throw new Error("Something Went Wrong");
     }
     return result;
-  } catch (error) {
-    throw new Error("An unexpected error occurred");
-  }
+  
 };
 
 
 
 
 const getAllSellKgFromDB = async () => {
-  try {
+
     const result = await SellKgModel.find({});
     if (!result || result.length === 0) {
       throw new Error("No Sell KG service Avilable ");
     }
     return result;
-  } catch (error) {
-    return error
-  }
+  
 }
 
 const updateSellKgFromDB = async (payload: Partial<TRoute>, id: string) => {
-  try {
+
     const result = await SellKgModel.findByIdAndUpdate(
       id, { payload }, { new: true }
     );
@@ -48,26 +44,22 @@ const updateSellKgFromDB = async (payload: Partial<TRoute>, id: string) => {
       throw new Error('Sell KG record not found or could not be updated.');
     }
     return result;
-  } catch (error) {
-    return error
-  }
+  
 }
 
 const deleteSellFromDB = async (id: string) => {
-  try {
+ 
     const result = await SellKgModel.findByIdAndDelete(id);
     if (!result) {
       throw new Error("Sell KG Post Deleted");
     }
     return result
-  } catch (error) {
-    return error
-  }
+  
 }
 
 
 const searchRouteFromDB = async (payload: Partial<TRoute>) => {
-  try {
+  
     console.log('Payload:', payload); // Log the payload for debugging
 
     // Build an $or array for fields provided in the payload
@@ -103,14 +95,11 @@ const searchRouteFromDB = async (payload: Partial<TRoute>) => {
 
     console.log('Search Results:', result); // Log the search results
     return result; // Return the search results
-  } catch (error) {
-    console.error('Error searching routes:', error);
-    throw new Error('An error occurred while searching for routes.');
-  }
+ 
 };
 
 const getAvailableForCourier = async (payload: TRoute) => {
-  try {
+
     // Build conditions for the query
     const conditions: any[] = [];
 
@@ -139,9 +128,7 @@ const getAvailableForCourier = async (payload: TRoute) => {
     // Use $and to enforce strict matching for departureCity and arrivalCity
     const result = await SellKgModel.find({ $and: conditions });
     return result;
-  } catch (error) {
-    return error;
-  }
+  
 };
 
 

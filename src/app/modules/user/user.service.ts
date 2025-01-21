@@ -10,49 +10,41 @@ const createUserIntoDB = async (userData: TUser): Promise<TUser> => {
   const user = await UserModel.findOne({ email: userData.email })
   if (user) {
     throw new Error("User exiest");
+    
   }
   const newUser = new UserModel(userData);
   return await newUser.save();
 };
 
 const getAllUserFromDB = async () => {
-  try {
+  
     const result = UserModel.find({});
     if (!result) {
       throw new Error("No User Found");
     }
     return result;
-  } catch (error) {
-    return error
-  }
 }
 
 const getOneUserByIdFromDB = async (id: string) => {
-  try {
+ 
     const result = await UserModel.findById({ _id: id });
     if (!result) {
       throw new Error("User ID Get Successfully");
     }
     return result;
-  } catch (error) {
-    return error
-  }
 }
 
 const updateUserFromDB = async (id: string, payload: Partial<TUser>,) => {
 
   // console.log( "pAYLOAD" ,payload)
 
-  try {
+  
     const result = await UserModel.findByIdAndUpdate(id, payload, { new: true, runValidators: true })
     // console.log("User Service" , result)
     if (!result) {
       throw new Error("Profile Not Updated Successfully");
     }
     return result;
-  } catch (error) {
-    return error
-  }
 }
 
 const loginUser = async (payload: TLoginUser) => {
@@ -95,7 +87,7 @@ const loginUser = async (payload: TLoginUser) => {
 
 
 const blockUserfromDB = async (id: string) => {
-  try {
+ 
     console.log(id);
     const result = await UserModel.find({ _id: id });
     if (result) {
@@ -104,14 +96,12 @@ const blockUserfromDB = async (id: string) => {
       const updatedResult = await UserModel.findByIdAndUpdate({ _id: id }, { isBlocked: true }, { new: true });
       console.log("Updated Result:", updatedResult);
       return updatedResult;
+    } else {
+      throw new Error("User Not Blocked Successfully");
     }
 
-  } catch (error) {
-    return error;
-  }
 };
 const suspendUserfromDB = async (id: string) => {
-  try {
     console.log(id);
     const result = await UserModel.find({ _id: id });
     if (result) {
@@ -122,13 +112,11 @@ const suspendUserfromDB = async (id: string) => {
       return updatedResult;
     }
 
-  } catch (error) {
-    return error;
-  }
+ 
 };
 
 const forgetPasswordFromDB = async (payload: TForgetPassword, email: string) => {
-  try {
+  
     const newPassword = payload.newPassword;
     const confirmNewPassword = payload.confirmNewPassword;
 
@@ -145,12 +133,10 @@ const forgetPasswordFromDB = async (payload: TForgetPassword, email: string) => 
     } else {
       throw new Error("Both fields are not the same");
     }
-  } catch (error) {
-    return error;
-  }
+ 
 };
 const resetPasswordFromDB = async (payload: TResetPassword, id: string) => {
-  try {
+ 
     const newPassword = payload.newPassword;
     const confirmNewPassword = payload.confirmNewPassword;
     const user = await UserModel.findById({ _id: id });
@@ -166,13 +152,10 @@ const resetPasswordFromDB = async (payload: TResetPassword, id: string) => {
     user.password = newPassword;
     await user.save();
     return user;
-  } catch (error) {
-    throw error;
-  }
+ 
 }
 
 const makeAdminFromDB = async (payload: Partial<TUser>) => {
-  try {
     const { email, password, message } = payload;
     const result = await UserModel.create(payload)
     if (!result) {
@@ -226,9 +209,7 @@ const makeAdminFromDB = async (payload: Partial<TUser>) => {
     }
 
     return result
-  } catch (error) {
-    return error
-  }
+ 
 }
 
 export const userService = {

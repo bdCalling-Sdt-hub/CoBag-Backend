@@ -10,18 +10,18 @@ const router = express.Router();
 
 router.post(
     "/create",
-    auth( USER_ROLE.admin, USER_ROLE.supar_admin),
+    auth( USER_ROLE.admin, USER_ROLE.super_admin),
     validateRequest(promoCodeValidation.PromoCodeSchema),
     promoCodeController.createPromoCode
 )
 router.get(
     "/read",
-    auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.supar_admin),
+    auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.super_admin),
     promoCodeController.getAllPromoCode
 )
 router.patch(
     "/update/:id",
-    auth( USER_ROLE.admin,  USER_ROLE.supar_admin),
+    auth( USER_ROLE.admin,  USER_ROLE.super_admin),
     validateRequest(promoCodeValidation.updatePromoCodeSchema),
     promoCodeController.updateProme
 )

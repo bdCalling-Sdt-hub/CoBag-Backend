@@ -10,34 +10,34 @@ const router = exoress.Router()
 
 router.post(
     "/create",
-    auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.supar_admin),
+    auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.super_admin),
     validateRequest(reviewValidation.ReviewValidationSchema),
     reviewController.createReview
 )
 router.patch(
     "/update/:id",
-    auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.supar_admin),
+    auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.super_admin),
     validateRequest(reviewValidation.UpdateReviewValidationSchema),
     reviewController.updateReview
 )
 router.delete(
     "/delete/:id",
-    auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.supar_admin),
+    auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.super_admin),
     reviewController.deleteReview
 )
 router.get(
     "/read",
-    auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.supar_admin),
+    auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.super_admin),
     reviewController.getAllReview
 )
 router.get(
     "/read/:id",
-    auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.supar_admin),
+    auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.super_admin),
     reviewController.getReviewById
 )
 router.get(
     "/avarege/:id",
-    auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.supar_admin),
+    auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.super_admin),
     reviewController.reviewAvaregeForSingleUser
 )
 

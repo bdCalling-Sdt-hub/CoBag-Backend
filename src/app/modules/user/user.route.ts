@@ -15,7 +15,7 @@ const upload = fileUploadHandler(UPLOADS_FOLDER_USER_DOCUMENTS)
 
 router.patch(
   '/update/:id',
-  auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.supar_admin),
+  auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.super_admin),
   validateRequest(userValidation.UpdateUserValidationSchema),
   upload.fields([
     {
@@ -39,7 +39,7 @@ router.patch(
 )
 router.get(
   '/get-user/:id',
-  auth( USER_ROLE.admin, USER_ROLE.supar_admin),
+  auth( USER_ROLE.admin, USER_ROLE.super_admin),
   userController.getOneUser
 )
 router.post(
@@ -49,7 +49,7 @@ router.post(
 )
 router.get(
   '/get-all-user',
-  auth( USER_ROLE.admin, USER_ROLE.supar_admin),
+  auth( USER_ROLE.admin, USER_ROLE.super_admin),
   userController.getAllUser
 )
 
@@ -65,12 +65,12 @@ router.post(
 );
 router.patch(
   '/block/:id',
-  auth( USER_ROLE.admin, USER_ROLE.supar_admin),
+  auth( USER_ROLE.admin, USER_ROLE.super_admin),
   userController.blockUser,
 );
 router.patch(
   '/suspend/:id',
-  auth( USER_ROLE.admin, USER_ROLE.supar_admin),
+  auth( USER_ROLE.admin, USER_ROLE.super_admin),
   userController.suspendUser,
 );
 router.post(
@@ -81,13 +81,13 @@ router.post(
 );
 router.post(
   '/reset-passs/:id',
-  auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.supar_admin),
+  auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.super_admin),
   validateRequest(userValidation.ResetPasswordValidationSchema),
   userController.resetPassword,
 );
 router.post(
   '/make-admin', 
-  auth(USER_ROLE.supar_admin),
+  auth(USER_ROLE.super_admin),
   // validateRequest(userValidation.AdminCreateAdminSchema),
   userController.makeAdmin,
 );

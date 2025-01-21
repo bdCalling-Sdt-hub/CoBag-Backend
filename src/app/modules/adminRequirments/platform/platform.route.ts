@@ -11,18 +11,18 @@ const router = express.Router()
 
 router.post(
     "/create",
-    auth( USER_ROLE.admin, USER_ROLE.supar_admin),
+    auth( USER_ROLE.admin, USER_ROLE.super_admin),
     validateRequest(platformValidation.platformSchema),
     platformController.createPlatform
 )
 router.get(
     "/read",
-    auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.supar_admin),
+    auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.super_admin),
     platformController.getAllPlatformData
 )
 router.patch(
     "/update",
-    auth( USER_ROLE.admin,  USER_ROLE.supar_admin),
+    auth( USER_ROLE.admin,  USER_ROLE.super_admin),
     validateRequest(platformValidation.UpdatePlatformSchema),
     platformController.updatePlatform
 )

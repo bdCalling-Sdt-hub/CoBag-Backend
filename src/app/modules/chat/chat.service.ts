@@ -3,20 +3,18 @@ import MessageModel from "./chat.model";
 
 
 const createMessageFromBD = async(payload : IMessage) => {
-try {
+
     const result = await MessageModel.create(payload);
     if (!result) {
         throw new Error("Message is not created"); 
     }
     return result;
-} catch (error) {
-    return error
-}
+
 }
 
 
 const getUserSeparateMessageFromDB = async (userId1: string, userId2: string) => {
-    try {
+    
       // Fetch messages between two users
       const messages = await MessageModel.find({
         $or: [
@@ -26,9 +24,7 @@ const getUserSeparateMessageFromDB = async (userId1: string, userId2: string) =>
       }).sort({ createdAt: 1 }); // Sort by time
   
       return messages; // Return the fetched messages
-    } catch (error) {
-      return error; // Return the error if something goes wrong
-    }
+   
   };
 
 export const chatService = {

@@ -6,7 +6,7 @@ import { HttpStatusCode } from "axios";
 import AppError from "../../errors/AppError";
 
 const sendVerificationFromDB = async (payload: Partial<IVerification>) => {
-    try {
+    
         // Extract email from payload
         const { email } = payload;
         console.log(email)
@@ -49,34 +49,26 @@ const sendVerificationFromDB = async (payload: Partial<IVerification>) => {
         // Respond with success message
         
         return result;
-    } catch (error) {
-       return error
-    }
 };
 
 
 const verifyFromDB = async (payload: { verificationCode: string }) => {
-    try {
-        // Destructure verificationCode from the payload
-        const { verificationCode } = payload;
+     // Destructure verificationCode from the payload
+     const { verificationCode } = payload;
 
-        // Log to debug the received data
-        console.log("Received verificationCode:", verificationCode);
+     // Log to debug the received data
+     console.log("Received verificationCode:", verificationCode);
 
-        // Query the database with the verificationCode
-        const result = await verificationCodeModel.find({ verificationCode });
-
-        // Check if no result is found
-        if (!result || result.length === 0) {
-            throw new AppError(HttpStatusCode.NotAcceptable, 'Failed to create user')
-        }
-
-        console.log("Query Result:", result);
-        return result;
-    } catch (error) {
-        console.error("Error:", error);
-        return { error: error };
-    }
+     // Query the database with the verificationCode
+     const result = await verificationCodeModel.findOne({ verificationCode });
+     // Check if no result is found
+     if (!result) {
+         // throw new AppError(HttpStatusCode.NotAcceptable, 'Failed to create user')
+         throw new Error("Failed")
+     }
+     const remove = await verificationCodeModel.deleteMany({ verificationCode : verificationCode });
+     console.log("Result For Service",result)
+     return result;
 };
 
 

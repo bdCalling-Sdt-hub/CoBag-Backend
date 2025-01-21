@@ -7,7 +7,8 @@ import catchAsync from '../utils/catchAsync';
 import UserModel from '../modules/user/user.model';
 import { TUserRole } from '../modules/user/user.interface';
 
-const auth = (...requiredRoles: TUserRole[]) => {
+const auth = (...requiredRoles:  TUserRole[]) => {
+  console.log(requiredRoles)
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const rawToken = req.headers.authorization;
     const token = rawToken?.split(' ')[1];

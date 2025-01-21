@@ -12,7 +12,7 @@ export type TUser = {
     RIB: string;
     phone: string;
     message?: string;
-    role: 'admin' | 'user' | 'super_admin';
+    role: "admin" | "user" | "super_admin";
     subscription: boolean;
     isBlocked: boolean; // Added field
     isSuspend: boolean; // Added field

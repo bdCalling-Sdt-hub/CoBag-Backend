@@ -11,7 +11,7 @@ const UPLOADS_FOLDER = 'uploads/logo';
 const upload = fileUploadHandler(UPLOADS_FOLDER);
 router.post(
   '/create',
-  auth( USER_ROLE.admin, USER_ROLE.supar_admin),
+  auth( USER_ROLE.admin, USER_ROLE.super_admin),
   upload.single('PlatformLogo'),
   validateRequest(generalValidation.CreateGeneralValidationSchema),
   generalController.createGeneral
@@ -19,7 +19,7 @@ router.post(
 
 router.patch(
   '/update',
-  auth( USER_ROLE.admin,  USER_ROLE.supar_admin),
+  auth( USER_ROLE.admin,  USER_ROLE.super_admin),
   upload.single('PlatformLogo'),
   validateRequest(generalValidation.UpdateGeneralValidationSchema),
   generalController.updateGeneral
@@ -27,7 +27,7 @@ router.patch(
 
 router.get(
     '/read',
-    auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.supar_admin),
+    auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.super_admin),
     generalController.getGeneralData
 )
 

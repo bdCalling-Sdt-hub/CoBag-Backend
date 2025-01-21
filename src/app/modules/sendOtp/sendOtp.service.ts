@@ -1,4 +1,6 @@
 import twilio from 'twilio';
+import AppError from '../../errors/AppError';
+import { HttpStatusCode } from 'axios';
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID || '';
 const authToken = process.env.TWILIO_AUTH_TOKEN || '';
@@ -29,7 +31,7 @@ export class OtpService {
             if (verificationCheck.status === 'approved') {
                 return true;
             } else {
-                throw new Error('Invalid OTP or OTP verification failed');
+                throw new AppError(HttpStatusCode.NotAcceptable, 'Failed to create user');
             }
         } catch (error: any) {
             console.error('Twilio verifyOtp error:', error); // Log the Twilio error

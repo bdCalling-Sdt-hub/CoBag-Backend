@@ -8,6 +8,7 @@ import express, { Application } from 'express';
 import globalErrorHandler from './app/middlewares/globalErrorhandler';
 import notFound from './app/middlewares/notFound';
 import router from './app/routes';
+import logger from './logger';
 
 const app: Application = express();
 
@@ -26,11 +27,15 @@ app.use(
   }
 );
 app.use(cors({
-  origin: '*',
+  origin: "*",
   credentials:true
 }));
 
-
+// Middleware to log HTTP requests
+app.use((req, res, next) => {
+  logger.info(`${req.method} ${req.url} - ${res.statusCode}`);
+  next();
+});
 // app.use(express.json());
 app.use(cookieParser());
 

@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { VaCodeService } from "./vaCode.service";
+import AppError from "../../errors/AppError";
+import { HttpStatusCode } from "axios";
 
 
 const sendVerification = async(req : Request, res : Response, next : NextFunction) => {
@@ -33,7 +35,7 @@ const verifyController = async (req : Request, res : Response, next : NextFuncti
         console.log("controller",code)
         const result = await VaCodeService.verifyFromDB(code);
         if (!result) {
-            throw new Error("Invalid Code");
+            throw new AppError(HttpStatusCode.NotAcceptable, 'Failed to Send Code')
         }
         res.status(200).json({
             success: true,

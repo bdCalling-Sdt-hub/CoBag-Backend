@@ -2,6 +2,8 @@ import nodemailer from "nodemailer";
 import IVerification from "./vaCode.interface";
 import UserModel from "../user/user.model";
 import verificationCodeModel from "./vaCode.model";
+import { HttpStatusCode } from "axios";
+import AppError from "../../errors/AppError";
 
 const sendVerificationFromDB = async (payload: Partial<IVerification>) => {
     try {
@@ -45,11 +47,13 @@ const sendVerificationFromDB = async (payload: Partial<IVerification>) => {
         const result = await verificationCodeModel.create(verificationRecord)
 
         // Respond with success message
+        
         return result;
     } catch (error) {
        return error
     }
 };
+
 
 const verifyFromDB = async (payload: { verificationCode: string }) => {
     try {
@@ -64,7 +68,7 @@ const verifyFromDB = async (payload: { verificationCode: string }) => {
 
         // Check if no result is found
         if (!result || result.length === 0) {
-            throw new Error("User Not Authenticated");
+            throw new AppError(HttpStatusCode.NotAcceptable, 'Failed to create user')
         }
 
         console.log("Query Result:", result);

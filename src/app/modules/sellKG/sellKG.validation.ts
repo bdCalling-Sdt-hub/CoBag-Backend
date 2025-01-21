@@ -4,7 +4,7 @@ const CreateRouteValidationSchema = z.object({
   body: z.object({
     userId: z.string(), // Ensure userId is present
     transportMode: z.enum(['plane', 'train'], { required_error: 'Transport mode is required' }),
-    size: z.enum(['small', 'medium', 'large']),
+    size: z.enum(['small', 'medium', 'large']).optional(),
     transportType: z.enum(['direct', 'withCorrespondence'], { required_error: 'Transport type is required' }),
     ticket: z.string().optional(),
     flightNumber: z.string().optional(),

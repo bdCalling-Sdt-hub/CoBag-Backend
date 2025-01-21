@@ -14,7 +14,7 @@ const upload = fileUploadHandler(UPLOADS_FOLDER);
 
 router.post(
     "/create",
-    auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.supar_admin),
+    auth(USER_ROLE.supar_admin, USER_ROLE.admin, USER_ROLE.user ),
     upload.single('ticket'),
     validateRequest(sellKgRouteValidation.CreateRouteValidationSchema),
     sellKgController.createSell

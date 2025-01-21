@@ -9,8 +9,8 @@ const UserSchema = z.object({
     phone: z.string().min(1, "Phone number is required"),
     role: z.enum(["admin", "user", "super_admin"]).default("user"),
     subscription: z.boolean().optional(),
-    isBlocked: z.string(), // Added field 
-    isSuspend: z.string(), // Added field 
+    isBlocked: z.string().optional(), // Added field 
+    isSuspend: z.string().optional(), // Added field 
     isTwentyPercent : z.boolean().optional(),
     isSubscription : z.boolean().optional(),
     createdAt: z.date().optional(),

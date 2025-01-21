@@ -119,27 +119,39 @@ const updateUser = async (req: Request, res: Response, next: NextFunction) => {
   }
 }
 
-const loginUser = catchAsync(async (req : Request, res : Response, next : NextFunction) => {
-  const result = await userService.loginUser(req.body);
-  const { email } = req.body;
-  const user = await UserModel.findOne({ email });
-  if (!result) {
-    throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
-  }
-  if (!user) {
-    throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
-  }
-  // console.log(user)
-  const accessToken = result;
-  res.status(200).json({
-    statusCode: 200,
-    success: true,
-    message: "User logged in successfully",
-    token: accessToken,
-    data: user
-  });
+const loginUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { email, password } = req.body;
 
+    // Ensure email and password are provided
+    if (!email || !password) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'Email and password are required!');
+    }
+
+    // Call the login service to authenticate the user
+    const accessToken = await userService.loginUser({ email, password });
+    if (!accessToken) {
+       
+      return  new Error("Access Token Not Genareted");
+     }
+     const user = await UserModel.find({email});
+     if (!user) {
+      return  new Error("user Not Found");
+     }
+    // Send the response only if the token is generated
+    res.status(200).json({
+      statusCode: 200,
+      success: true,
+      message: 'User logged in successfully',
+      token: accessToken,
+      data : user
+    });
+  } catch (error) {
+    next(error); // Pass the error to the global error handler
+  }
 });
+
+
 
 const logout = async (req: Request, res: Response, next: NextFunction) => {
   try {

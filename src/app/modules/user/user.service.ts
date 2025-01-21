@@ -56,45 +56,43 @@ const updateUserFromDB = async (id: string, payload: Partial<TUser>,) => {
 }
 
 const loginUser = async (payload: TLoginUser) => {
-  try {
-    const { email, password } = payload;
-    console.log(email)
-    // checking if the user is exist
-    const user = await UserModel.findOne({ email });
-    console.log("user 1", user?.password)
-    if (!user) {
-      throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
-    }
-    console.log("user 2", user._id)
-    //checking if the password is correct
+  const { email, password } = payload;
 
-    if (user?.password !== password) {
-      throw new Error("password didn't matched")
-    }
-    if (!(user?.email === email)) {
-      throw new Error("password didn't matched")
-    }
-
-    //create token and sent to the  client
-
-    const jwtPayload = {
-      userId: user?._id,
-      role: user?.role,
-    };
-
-    const accessToken = createToken(
-      jwtPayload,
-      config.jwt_access_secret as string,
-      config.jwt_access_expires_in as string,
-    );
-
-
-
-    return accessToken;
-  } catch (error) {
-    return error
+  if (!email || !password) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Email and password are required!');
   }
+
+  // Check if the user exists
+  const user = await UserModel.findOne({ email });
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found!');
+  }
+
+  // Validate the password (basic string comparison)
+  if (user.password !== password) {
+    throw new AppError(httpStatus.UNAUTHORIZED, 'Incorrect password!');
+  }
+
+  // Create the JWT payload
+  const jwtPayload = {
+    userId: user._id,
+    role: user.role,
+  };
+
+  // Generate access token
+  const accessToken = createToken(
+    jwtPayload,
+    config.jwt_access_secret as string,
+    config.jwt_access_expires_in as string,
+  );
+
+  // Return the generated access token
+  return accessToken;
 };
+
+
+
+
 
 const blockUserfromDB = async (id: string) => {
   try {

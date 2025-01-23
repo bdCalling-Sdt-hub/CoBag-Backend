@@ -1,4 +1,6 @@
+import mongoose from "mongoose";
 import PlatformModel from "../adminRequirments/platform/platform.model";
+import UserModel from "../user/user.model";
 import { TRoute } from "./sellKG.interface"
 import SellKgModel from "./sellKG.model"
 
@@ -18,7 +20,16 @@ const createSellFromDB = async (payload: TRoute) => {
     if (!result) {
       throw new Error("Something Went Wrong");
     }
-    return result;
+    const { userId } = result;
+    const user = await UserModel.findById(userId.toString())
+    console.log("Here Is console User ", user)
+    result.user = user;
+    console.log("user", user);
+    console.log(result)
+    await result.save()
+    return  {
+      result
+    };
   
 };
 
@@ -60,36 +71,55 @@ const deleteSellFromDB = async (id: string) => {
 
 const searchRouteFromDB = async (payload: Partial<TRoute>) => {
   console.log('Payload:', payload); // Log the payload for debugging
-  try {
-    const {
-      transportMode,
-      departureCity,
-      arrivalCity,
-      departureDate,
-      arrivalDate,
-      totalSpace,
-    } = payload;
 
-    // Build the search query
-    const query = {
-      transportMode,
-      departureCity,
-      arrivalCity,
-      // Check other fields only if the first three conditions match
-      departureDate: { $gte: departureDate },
-      arrivalDate: { $gte: arrivalDate },
-      totalSpace: { $gte: totalSpace },
-    };
-
-    // Execute the query
-    const results = await SellKgModel.find(query);
-
-    return results;
-  } catch (error) {
-    console.error('Error while searching routes:', error);
-    throw new Error('Failed to search routes');
+  const {
+    transportMode,
+    departureCity,
+    arrivalCity,
+    departureDate,
+    arrivalDate,
+    totalSpace,
+  } = payload;
+  
+  // Build the transportMode condition
+  let transportCondition;
+  if (transportMode === 'all') {
+    transportCondition = { $in: ['train', 'plane'] }; // Match both train and plane
+  } else {
+    transportCondition = transportMode; // Match the specific mode
   }
+  
+  // Build the search query
+  const query: any = {
+    transportMode: transportCondition,
+    departureCity: departureCity
+      ? { $regex: new RegExp(`^${departureCity}$`, 'i') } // Case-insensitive match
+      : undefined,
+    arrivalCity: arrivalCity
+      ? { $regex: new RegExp(`^${arrivalCity}$`, 'i') } // Case-insensitive match
+      : undefined,
+    departureDate: departureDate ? { $gte: departureDate } : undefined,
+    arrivalDate: arrivalDate ? { $gte: arrivalDate } : undefined,
+    totalSpace: totalSpace ? { $gte: totalSpace } : undefined,
+  };
+
+  // Remove undefined fields from the query
+  Object.keys(query).forEach((key) => query[key] === undefined && delete query[key]);
+
+  // Execute the query
+  const results = await SellKgModel.find(query);
+
+  // Log all userIds and populate user information
+  for (const result of results) {
+    const user = await UserModel.findById({ _id: result.userId });
+    result.user = user;
+    console.log('One By One:', result.user);
+  }
+
+  return results;
 };
+
+
 
 
 

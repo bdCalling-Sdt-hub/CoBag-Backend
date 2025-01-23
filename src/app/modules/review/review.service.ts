@@ -1,3 +1,4 @@
+import UserModel from "../user/user.model";
 import { TReview } from "./review.interface";
 import ReviewModel from "./review.model";
 
@@ -38,6 +39,7 @@ const reviewAvaregeForSingleUserFromDB = async (id: string) => {
 
     // Find all reviews for the given receiverId
     const reviews = await ReviewModel.find({ receiverId: id });
+    const user = await UserModel.findById({ receiverId: id })
 
     // If no reviews are found, return an appropriate message or value
     if (reviews.length === 0) {
@@ -47,6 +49,11 @@ const reviewAvaregeForSingleUserFromDB = async (id: string) => {
     // Calculate the average rating
     const totalRatings = reviews.reduce((sum, review) => sum + review.ratings, 0);
     const averageRating = totalRatings / reviews.length;
+    if (user) {
+        user.reviewInt = reviews.length;
+        user.reviewAva = averageRating
+        await user.save();
+    }
 
     // Return the average rating
     return { averageRating };

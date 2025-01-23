@@ -3,7 +3,7 @@ import { z } from 'zod';
 const CreateRouteValidationSchema = z.object({
   body: z.object({
     userId: z.string(), // Ensure userId is present
-    transportMode: z.enum(['plane', 'train'], { required_error: 'Transport mode is required' }),
+    transportMode: z.enum(['plane', 'train', 'all'], { required_error: 'Transport mode is required' }),
     size: z.enum(['small', 'medium', 'large']).optional(),
     transportType: z.enum(['direct', 'withCorrespondence'], { required_error: 'Transport type is required' }),
     ticket: z.string().optional(),
@@ -34,7 +34,7 @@ const CreateRouteValidationSchema = z.object({
 const UpdateRouteValidationSchema = z.object({
   body: z.object({
     userId: z.string().optional(), // Optional during updates
-    transportMode: z.enum(['plane', 'train']).optional(),
+    transportMode: z.enum(['plane', 'train', 'all']).optional(),
     transportType: z.enum(['direct', 'withCorrespondence']).optional(),
     ticket: z.string().optional(),
     flightNumber: z.string().optional(),
@@ -58,7 +58,7 @@ const UpdateRouteValidationSchema = z.object({
 const SearchRouteValidationSchema = z.object({
   body: z.object({
     userId: z.string().optional(),
-    transportMode: z.enum(['plane', 'train']).optional(),
+    transportMode: z.enum(['plane', 'train','all']).optional(),
     transportType: z.enum(['direct', 'withCorrespondence']).optional(),
     ticket: z.string().optional(),
     flightNumber: z.string().optional(),

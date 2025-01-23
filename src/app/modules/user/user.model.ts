@@ -8,7 +8,8 @@ const UserSchema: Schema = new Schema(
     email: { type: String, unique: true, required: true },
     password: { type: String, required: true },
     profileImage: {
-      type: String
+      type: String,
+      default: "",
     },
     ethanDocuments: {
       type: String
@@ -19,6 +20,14 @@ const UserSchema: Schema = new Schema(
     },
     RIB: {
       type: String
+    },
+    reviewAva : {
+      type : Number,
+      default : 0
+    },
+    reviewInt : {
+      type : Number,
+      default : 0
     },
     phone: { type: String, required: true },
     subscription: { type: Boolean, default: false },

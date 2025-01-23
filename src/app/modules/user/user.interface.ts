@@ -11,6 +11,8 @@ export type TUser = {
     proofOfAddress: string;
     RIB: string;
     phone: string;
+    reviewAva: number;
+    reviewInt: number;
     message?: string;
     role: "admin" | "user" | "super_admin";
     subscription: boolean;

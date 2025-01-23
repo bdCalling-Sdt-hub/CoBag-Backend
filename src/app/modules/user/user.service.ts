@@ -5,6 +5,7 @@ import UserModel from "./user.model"
 import config from "../../config";
 import { createToken } from "./user.utils";
 import nodemailer from "nodemailer";
+import ReviewModel from "../review/review.model";
 
 const createUserIntoDB = async (userData: TUser) => {
   const user = await UserModel.findOne({ email: userData.email })
@@ -50,6 +51,24 @@ const getAllUserFromDB = async () => {
 const getOneUserByIdFromDB = async (id: string) => {
 
   const result = await UserModel.findById({ _id: id });
+   // Find all reviews for the given receiverId
+   const reviews = await ReviewModel.find({ _id: id });
+   const user = await UserModel.findById({ _id: id })
+
+   // If no reviews are found, return an appropriate message or value
+   if (reviews.length === 0) {
+       return { message: 'No reviews found for this user', averageRating: 0 };
+   }
+
+   // Calculate the average rating
+   const totalRatings = reviews.reduce((sum, review) => sum + review.ratings, 0);
+   const averageRating = totalRatings / reviews.length;
+   if (user) {
+       user.reviewInt = reviews.length;
+       user.reviewAva = averageRating
+       await user.save();
+   }
+
   if (!result) {
     throw new Error("User ID Get Successfully");
   }

@@ -10,7 +10,7 @@ const createSell = async (req : Request, res : Response, next : NextFunction) =>
             payload.profileImage = `/uploads/ticket/${req.file.filename}`;
           }
         console.log(req.file);
-        const result = await sellKgService.createSellFromDB(req.body);
+        const result = await sellKgService.createSellFromDB( req.body);
         if (!result) {
             throw new Error("User Not Created Successfully");
         }
@@ -79,23 +79,24 @@ const deleteFromDB = async(req : Request, res : Response, next : NextFunction) =
     }
 }
 
-const searchRoute = async (req : Request, res : Response, next : NextFunction) => {
+const searchRoute = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const payload = req.body;
-        const result = await sellKgService.searchRouteFromDB(payload)
-        if (!result) {
-            throw new Error("Route Not Find");
-        }
-        res.status(200).json({
-            success: true,
-            statusCode: 200,
-            message: 'Search Result',
-            data: result
-        });
+      const payload = req.body;
+      const result = await sellKgService.searchRouteFromDB(payload);
+      if (!result) {
+        throw new Error("Route Not Found");
+      }
+      res.status(200).json({
+        success: true,
+        statusCode: 200,
+        message: 'Search Result',
+        data: result,
+      });
     } catch (error) {
-        next(error)
+      next(error);
     }
-}
+  };
+  
 
 const availableForCourier = async (req  : Request, res : Response, next : NextFunction) => {
     try {

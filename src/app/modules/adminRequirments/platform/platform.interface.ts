@@ -7,4 +7,5 @@ export interface TPlatform {
     };
     minimumPricePerTransaction: number;
     coBagCommission: number;
+    missionPrice: number;
   }

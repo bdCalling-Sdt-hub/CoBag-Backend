@@ -7,7 +7,6 @@ import { userService } from './user.service';
 import { NextFunction, Request, Response } from 'express';
 import UserModel from './user.model';
 import AppError from '../../errors/AppError';
-import { error } from 'console';
 
 export const createUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
@@ -21,22 +20,11 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
       throw new Error("User not created successfully");
     }
 
-    const modifiedResult: Partial<TUser> = {
-      _id: result?._id,
-      firstName: result?.firstName,
-      lastName: result?.lastName,
-      email: result?.email,
-      phone: result?.phone,
-      role: result?.role,
-      createdAt: result?.createdAt,
-      updatedAt: result?.updatedAt
-    };
-
     res.status(201).json({
       success: true,
       statusCode: 201,
       message: 'User registered successfully',
-      data: modifiedResult
+      data: result
     });
   } catch (error) {
     next(error);
@@ -88,7 +76,9 @@ const updateUser = async (req: Request, res: Response, next: NextFunction) => {
       proofOfAddress?: { filename: string }[];
       RIB?: { filename: string }[];
     };
-
+    
+    console.log("Update Body" , payload)
+    console.log("Update Files", files)
     if (files?.profileImage && files.profileImage[0]?.filename) {
       payload.profileImage = `/uploads/users/${files.profileImage[0].filename}`;
     }
@@ -131,20 +121,20 @@ const loginUser = catchAsync(async (req: Request, res: Response, next: NextFunct
     // Call the login service to authenticate the user
     const accessToken = await userService.loginUser({ email, password });
     if (!accessToken) {
-       
-      return  new Error("Access Token Not Genareted");
-     }
-     const user = await UserModel.find({email});
-     if (!user) {
-      return  new Error("user Not Found");
-     }
+
+      return new Error("Access Token Not Genareted");
+    }
+    const user = await UserModel.find({ email });
+    if (!user) {
+      return new Error("user Not Found");
+    }
     // Send the response only if the token is generated
     res.status(200).json({
       statusCode: 200,
       success: true,
       message: 'User logged in successfully',
       token: accessToken,
-      data : user
+      data: user
     });
   } catch (error) {
     next(error); // Pass the error to the global error handler
@@ -229,7 +219,7 @@ const resetPassword = async (req: Request, res: Response, next: NextFunction) =>
   }
 }
 
-const makeAdmin = async (req : Request, res : Response, next : NextFunction) => {
+const makeAdmin = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const payload = req.body;
     const result = await userService.makeAdminFromDB(payload)

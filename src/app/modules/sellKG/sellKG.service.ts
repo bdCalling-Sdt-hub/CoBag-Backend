@@ -59,44 +59,39 @@ const deleteSellFromDB = async (id: string) => {
 
 
 const searchRouteFromDB = async (payload: Partial<TRoute>) => {
-  
-    console.log('Payload:', payload); // Log the payload for debugging
+  console.log('Payload:', payload); // Log the payload for debugging
+  try {
+    const {
+      transportMode,
+      departureCity,
+      arrivalCity,
+      departureDate,
+      arrivalDate,
+      totalSpace,
+    } = payload;
 
-    // Build an $or array for fields provided in the payload
-    const conditions: any[] = [];
+    // Build the search query
+    const query = {
+      transportMode,
+      departureCity,
+      arrivalCity,
+      // Check other fields only if the first three conditions match
+      departureDate: { $gte: departureDate },
+      arrivalDate: { $gte: arrivalDate },
+      totalSpace: { $gte: totalSpace },
+    };
 
-    if (payload.transportMode) {
-      conditions.push({ transportMode: payload.transportMode });
-    }
-    if (payload.departureCity && payload.arrivalCity) {
-      conditions.push({
-        departureCity: payload.departureCity,
-        arrivalCity: payload.arrivalCity
-      })
-    }
-    if (payload.departureDate) {
-      conditions.push({ departureDate: payload.departureDate });
-    }
-    if (payload.handLuggage !== undefined) {
-      conditions.push({ 'availableWeight.handLuggage': { $gte: payload.handLuggage } });
-    }
-    if (payload.checkedBaggage !== undefined) {
-      conditions.push({ 'availableWeight.checkedBaggage': { $gte: payload.checkedBaggage } });
-    }
+    // Execute the query
+    const results = await SellKgModel.find(query);
 
-    // If no conditions are provided, return an empty array
-    if (conditions.length === 0) {
-      console.log('No search criteria provided.');
-      return [];
-    }
-
-    // Query the database using $or
-    const result = await SellKgModel.find({ $or: conditions });
-
-    console.log('Search Results:', result); // Log the search results
-    return result; // Return the search results
- 
+    return results;
+  } catch (error) {
+    console.error('Error while searching routes:', error);
+    throw new Error('Failed to search routes');
+  }
 };
+
+
 
 const getAvailableForCourier = async (payload: TRoute) => {
 
@@ -111,11 +106,11 @@ const getAvailableForCourier = async (payload: TRoute) => {
       )
 
       // If both departureCity and arrivalCity exist, consider additional optional fields
-      if (payload.departureTime) {
-        conditions.push({ departureTime: payload.departureTime });
+      if (payload.departureDate) {
+        conditions.push({ departureDate: payload.departureDate });
       }
-      if (payload.arrivalTime) {
-        conditions.push({ arrivalTime: payload.arrivalTime });
+      if (payload.arrivalDate) {
+        conditions.push({ arrivalDate: payload.arrivalDate });
       }
       if (payload.maxpurchAmountAdvance) {
         conditions.push({ maxpurchAmountAdvance: { $gte: payload.maxpurchAmountAdvance } });

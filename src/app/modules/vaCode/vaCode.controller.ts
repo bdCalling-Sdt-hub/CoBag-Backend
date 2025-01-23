@@ -10,9 +10,8 @@ const sendVerification = async (req: Request, res: Response, next: NextFunction)
         } else if (req.params) {
             email = req.params;
         }
-        // console.log("controller")
 
-        const result = VaCodeService.sendVerificationFromDB(email);
+        const result = VaCodeService.sendVerificationFromDB( email );
         if (!result) {
             throw new Error("Something went wrong");
         }
@@ -47,8 +46,30 @@ const verifyController = async (req: Request, res: Response, next: NextFunction)
         next(error)
     }
 }
+// const verifyEmailController = async (req: Request, res: Response, next: NextFunction) => {
+//     try {
+//         const {code} = req.body;
+//         console.log("controller", code)
+//         const {id} = req.user
+//         const result = await VaCodeService.verifyEmailFromDB(id ,code);
+//         if (!result) {
+//             throw new Error("Invalid Code");
+//         }
+//         console.log("Result For controller", result)
+//         res.status(200).json({
+//             success: true,
+//             statusCode: 200,
+//             message: 'valid user',
+//             data: result
+//         });
+//     } catch (error) {
+//         console.log(error)
+//         next(error)
+//     }
+// }
 
 export const VaCodeController = {
     sendVerification,
-    verifyController
+    verifyController,
+    // verifyEmailController
 }

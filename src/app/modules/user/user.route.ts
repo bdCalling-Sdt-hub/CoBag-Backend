@@ -75,7 +75,6 @@ router.patch(
 );
 router.post(
   '/change-passs/:email',
-  auth( USER_ROLE.admin, USER_ROLE.user),
   validateRequest(userValidation.ForgetPasswordValidationSchema),
   userController.forgetPassword,
 );

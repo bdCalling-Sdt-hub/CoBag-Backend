@@ -21,13 +21,13 @@ router.post(
 )
 router.post(
     "/search",
-    auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.super_admin),
+    // auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.super_admin),
     validateRequest(sellKgRouteValidation.SearchRouteValidationSchema) ,
     sellKgController.searchRoute
 )
 router.post(
     "/search/courier",
-    auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.super_admin),
+    // auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.super_admin),
     sellKgController.availableForCourier
 )
 router.get(

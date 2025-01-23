@@ -3,14 +3,27 @@ import PromoCodeModel from "./promoCode.model"
 
 
 const createPromoCodeFromDB = async (payload : TPromoCode) => {
-    
-        const result = await PromoCodeModel.create(payload);
-        if (!result) {
-            throw new Error("Promo Code not Created");
-        }
-        return result;
-    
-}
+  // Take current date
+  const currentDate = new Date();
+
+  // Check if expirationDate is provided in payload
+  if (payload.expirationDate && new Date(payload.expirationDate) < currentDate) {
+      // If the expiration date is in the past, set isActive to false
+      payload.isActive = false;
+  } else {
+      // Otherwise, ensure isActive is true by default
+      payload.isActive = payload.isActive !== undefined ? payload.isActive : true;
+  }
+
+  // Create the promo code in the database
+  const result = await PromoCodeModel.create(payload);
+  if (!result) {
+      throw new Error("Promo Code not Created");
+  }
+
+  return result;
+};
+
 
 const getAllPromoCodeFromDB = async () => {
     

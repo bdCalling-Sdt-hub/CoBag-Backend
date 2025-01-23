@@ -11,6 +11,7 @@ const ConfigSchema: Schema = new Schema(
       },
       minimumPricePerTransaction: { type: Number, required: true },
       coBagCommission: { type: Number, required: true },
+      missionPrice: { type: Number, required: true },
     },
     {
       timestamps: true, // Automatically adds createdAt and updatedAt fields

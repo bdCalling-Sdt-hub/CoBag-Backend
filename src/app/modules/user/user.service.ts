@@ -6,45 +6,67 @@ import config from "../../config";
 import { createToken } from "./user.utils";
 import nodemailer from "nodemailer";
 
-const createUserIntoDB = async (userData: TUser): Promise<TUser> => {
+const createUserIntoDB = async (userData: TUser) => {
   const user = await UserModel.findOne({ email: userData.email })
+
+
   if (user) {
     throw new Error("User exiest");
-    
+
   }
-  const newUser = new UserModel(userData);
-  return await newUser.save();
+  console.log(user)
+
+
+  const newUser = await UserModel.create(userData)
+
+  // Create the JWT payload
+  const jwtPayload = {
+    userId: newUser._id,
+    role: newUser.role,
+  };
+
+  // Generate access token
+  const accessToken = createToken(
+    jwtPayload,
+    config.jwt_access_secret as string,
+    config.jwt_access_expires_in as string,
+  );
+
+  return {
+    token: accessToken,
+    data : newUser
+  }
 };
 
 const getAllUserFromDB = async () => {
-  
-    const result = UserModel.find({});
-    if (!result) {
-      throw new Error("No User Found");
-    }
-    return result;
+
+  const result = UserModel.find({});
+  if (!result) {
+    throw new Error("No User Found");
+  }
+  return result;
 }
 
 const getOneUserByIdFromDB = async (id: string) => {
- 
-    const result = await UserModel.findById({ _id: id });
-    if (!result) {
-      throw new Error("User ID Get Successfully");
-    }
-    return result;
+
+  const result = await UserModel.findById({ _id: id });
+  if (!result) {
+    throw new Error("User ID Get Successfully");
+  }
+  return result;
 }
 
 const updateUserFromDB = async (id: string, payload: Partial<TUser>,) => {
 
   // console.log( "pAYLOAD" ,payload)
 
-  
-    const result = await UserModel.findByIdAndUpdate(id, payload, { new: true, runValidators: true })
-    // console.log("User Service" , result)
-    if (!result) {
-      throw new Error("Profile Not Updated Successfully");
-    }
-    return result;
+
+  const result = await UserModel.findByIdAndUpdate(id, payload, { new: true, runValidators: true })
+  // console.log("User Service" , result)
+  if (!result) {
+    throw new Error("Profile Not Updated Successfully");
+  }
+  return result;
 }
 
 const loginUser = async (payload: TLoginUser) => {
@@ -87,99 +109,99 @@ const loginUser = async (payload: TLoginUser) => {
 
 
 const blockUserfromDB = async (id: string) => {
- 
-    console.log(id);
-    const result = await UserModel.find({ _id: id });
-    if (result) {
-      console.log("result :", result);
-      // Update the isBlocked field to true
-      const updatedResult = await UserModel.findByIdAndUpdate({ _id: id }, { isBlocked: true }, { new: true });
-      console.log("Updated Result:", updatedResult);
-      return updatedResult;
-    } else {
-      throw new Error("User Not Blocked Successfully");
-    }
+
+  console.log(id);
+  const result = await UserModel.find({ _id: id });
+  if (result) {
+    console.log("result :", result);
+    // Update the isBlocked field to true
+    const updatedResult = await UserModel.findByIdAndUpdate({ _id: id }, { isBlocked: true }, { new: true });
+    console.log("Updated Result:", updatedResult);
+    return updatedResult;
+  } else {
+    throw new Error("User Not Blocked Successfully");
+  }
 
 };
 const suspendUserfromDB = async (id: string) => {
-    console.log(id);
-    const result = await UserModel.find({ _id: id });
-    if (result) {
-      console.log("result :", result);
-      // Update the isBlocked field to true
-      const updatedResult = await UserModel.findByIdAndUpdate({ _id: id }, { isSuspend: true }, { new: true });
-      console.log("Updated Result:", updatedResult);
-      return updatedResult;
-    }
+  console.log(id);
+  const result = await UserModel.find({ _id: id });
+  if (result) {
+    console.log("result :", result);
+    // Update the isBlocked field to true
+    const updatedResult = await UserModel.findByIdAndUpdate({ _id: id }, { isSuspend: true }, { new: true });
+    console.log("Updated Result:", updatedResult);
+    return updatedResult;
+  }
 
- 
+
 };
 
 const forgetPasswordFromDB = async (payload: TForgetPassword, email: string) => {
-  
-    const newPassword = payload.newPassword;
-    const confirmNewPassword = payload.confirmNewPassword;
 
-    if (newPassword === confirmNewPassword) {
-      const user = await UserModel.findOne({ email: email });
-      if (user) {
-        user.password = newPassword; // Update the password field
-        await user.save(); // Save the updated user
-        console.log("Password updated successfully for:", user);
-        return user;
-      } else {
-        throw new Error("User not found");
-      }
+  const newPassword = payload.newPassword;
+  const confirmNewPassword = payload.confirmNewPassword;
+
+  if (newPassword === confirmNewPassword) {
+    const user = await UserModel.findOne({ email: email });
+    if (user) {
+      user.password = newPassword; // Update the password field
+      await user.save(); // Save the updated user
+      console.log("Password updated successfully for:", user);
+      return user;
     } else {
-      throw new Error("Both fields are not the same");
+      throw new Error("User not found");
     }
- 
+  } else {
+    throw new Error("Both fields are not the same");
+  }
+
 };
 const resetPasswordFromDB = async (payload: TResetPassword, id: string) => {
- 
-    const newPassword = payload.newPassword;
-    const confirmNewPassword = payload.confirmNewPassword;
-    const user = await UserModel.findById({ _id: id });
-    if (!user) {
-      throw new Error("User Not found");
-    }
-    if (!(user.password === payload.oldPassword)) {
-      throw new Error("Old Password Not Matched");
-    }
-    if (!(newPassword === confirmNewPassword)) {
-      throw new Error("New password and confirm new password not matched");
-    }
-    user.password = newPassword;
-    await user.save();
-    return user;
- 
+
+  const newPassword = payload.newPassword;
+  const confirmNewPassword = payload.confirmNewPassword;
+  const user = await UserModel.findById({ _id: id });
+  if (!user) {
+    throw new Error("User Not found");
+  }
+  if (!(user.password === payload.oldPassword)) {
+    throw new Error("Old Password Not Matched");
+  }
+  if (!(newPassword === confirmNewPassword)) {
+    throw new Error("New password and confirm new password not matched");
+  }
+  user.password = newPassword;
+  await user.save();
+  return user;
+
 }
 
 const makeAdminFromDB = async (payload: Partial<TUser>) => {
-    const { email, password, message } = payload;
-    const result = await UserModel.create(payload)
-    if (!result) {
-      throw new Error("Admin Not Created");
-    } else {
-      const user = await UserModel.findOne({ email });
-      if (!user) {
-        throw new Error("User Not Register In Database Yet for send mail His Cradential ");
-      }
-      // Configure Nodemailer
-      const transporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-          user: 'sayedhasan973@gmail.com', //sayedhasan973@gmail.com
-          pass: 'xssp ebum kdxf eyvf',//xssp ebum kdxf eyvf
-        },
-      });
+  const { email, password, message } = payload;
+  const result = await UserModel.create(payload)
+  if (!result) {
+    throw new Error("Admin Not Created");
+  } else {
+    const user = await UserModel.findOne({ email });
+    if (!user) {
+      throw new Error("User Not Register In Database Yet for send mail His Cradential ");
+    }
+    // Configure Nodemailer
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: 'sayedhasan973@gmail.com', //sayedhasan973@gmail.com
+        pass: 'xssp ebum kdxf eyvf',//xssp ebum kdxf eyvf
+      },
+    });
 
-      // Email options
-      const mailOptions = {
-        from: 'sayedhasan973@gmail.com',
-        to: email,
-        subject: "CoBag Official",
-        html: `
+    // Email options
+    const mailOptions = {
+      from: 'sayedhasan973@gmail.com',
+      to: email,
+      subject: "CoBag Official",
+      html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9;">
             <h2 style="color: #4CAF50; text-align: center;">Welcome to CoBag!</h2>
             <p style="font-size: 16px; color: #333;">Congratulations! You have been promoted to an <strong>Admin</strong> on <strong>CoBag</strong>. Below are your credentials to access your account:</p>
@@ -202,14 +224,14 @@ const makeAdminFromDB = async (payload: Partial<TUser>) => {
             <p style="font-size: 12px; color: #888; text-align: center;">If you did not request this, please contact us immediately at support@cobag.com.</p>
           </div>
         `,
-      };
-      
-      // Send the email
-      await transporter.sendMail(mailOptions);
-    }
+    };
 
-    return result
- 
+    // Send the email
+    await transporter.sendMail(mailOptions);
+  }
+
+  return result
+
 }
 
 export const userService = {

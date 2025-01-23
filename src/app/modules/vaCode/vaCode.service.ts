@@ -66,7 +66,25 @@ const verifyFromDB = async (payload: { verificationCode: string }) => {
          // throw new AppError(HttpStatusCode.NotAcceptable, 'Failed to create user')
          throw new Error("Failed")
      }
-     const remove = await verificationCodeModel.deleteMany({ verificationCode : verificationCode });
+     const remove = await verificationCodeModel.deleteOne({ verificationCode : verificationCode });
+     console.log("Result For Service",result)
+     return result;
+};
+const verifyEmailFromDB = async (payload: Partial<IVerification> ) => {
+     // Destructure verificationCode from the payload
+     const  verificationCode  = payload.verificationCode;
+
+     // Log to debug the received data
+     console.log("Received verificationCode:", verificationCode);
+
+     // Query the database with the verificationCode
+     const result = await verificationCodeModel.findOne({ verificationCode });
+     // Check if no result is found
+     if (!result) {
+         // throw new AppError(HttpStatusCode.NotAcceptable, 'Failed to create user')
+         throw new Error("Failed")
+     }
+     const remove = await verificationCodeModel.deleteOne({ verificationCode : verificationCode });
      console.log("Result For Service",result)
      return result;
 };
@@ -77,4 +95,5 @@ const verifyFromDB = async (payload: { verificationCode: string }) => {
 export const   VaCodeService = {
     sendVerificationFromDB,
     verifyFromDB,
+    verifyEmailFromDB
 }

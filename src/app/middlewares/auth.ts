@@ -11,6 +11,7 @@ const auth = (...requiredRoles:  TUserRole[]) => {
   console.log(requiredRoles)
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const rawToken = req.headers.authorization;
+    console.log("Raw Token", rawToken)
     const token = rawToken?.split(' ')[1];
     // checking if the token is missing
     if (!token) {

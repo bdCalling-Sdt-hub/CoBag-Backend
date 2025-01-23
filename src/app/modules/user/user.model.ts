@@ -37,6 +37,7 @@ const UserSchema: Schema = new Schema(
       default: "user",
     },
     isBlocked: { type: Boolean, default: false }, // Added field
+    isverified: { type: Boolean, default: false }, // Added field
     isSuspend: { type: Boolean, default: false }, // Added field
     isTwentyPercent: { type: Boolean },
     isSubscription : {type : Boolean},

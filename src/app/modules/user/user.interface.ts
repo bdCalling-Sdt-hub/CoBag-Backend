@@ -17,6 +17,7 @@ export type TUser = {
     role: "admin" | "user" | "super_admin";
     subscription: boolean;
     isBlocked: boolean; // Added field
+    isverified: boolean; // Added field
     isSuspend: boolean; // Added field
     isTwentyPercent ?: boolean, 
     isSubscription?: boolean,  

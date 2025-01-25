@@ -120,7 +120,14 @@ const searchRouteFromDB = async (payload: Partial<TRoute>) => {
 };
 
 
+const getOneSellKgFromDB = async (id: string) => {
 
+    const result = await SellKgModel.findById(id);
+    if (!result) {  
+      throw new Error('Sell KG record not found.');
+    }  
+    return result;
+}
 
 
 const getAvailableForCourier = async (payload: TRoute) => {
@@ -157,7 +164,7 @@ const getAvailableForCourier = async (payload: TRoute) => {
 };
 
 
-export default searchRouteFromDB;
+
 
 export const sellKgService = {
   createSellFromDB,
@@ -165,6 +172,7 @@ export const sellKgService = {
   updateSellKgFromDB,
   getAvailableForCourier,
   deleteSellFromDB,
-  searchRouteFromDB
+  searchRouteFromDB,
+  getOneSellKgFromDB
 
 }

@@ -11,6 +11,9 @@ const UserSchema: Schema = new Schema(
       type: String,
       default: "",
     },
+    address : {
+      type : String
+    },
     ethanDocuments: {
       type: String
     },

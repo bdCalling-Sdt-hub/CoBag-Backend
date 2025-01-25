@@ -19,6 +19,11 @@ router.post(
     validateRequest(sellKgRouteValidation.CreateRouteValidationSchema),
     sellKgController.createSell
 )
+router.get(
+    "/read/:id",
+    auth(USER_ROLE.super_admin, USER_ROLE.admin, USER_ROLE.user ),
+    sellKgController.getOneSellKg
+)
 router.post(
     "/search",
     // auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.super_admin),

@@ -24,6 +24,23 @@ const createSell = async (req : Request, res : Response, next : NextFunction) =>
         next(error)
     }
 }
+const getOneSellKg = async(req : Request, res : Response, next : NextFunction) => {
+    try {
+        const {id} = req.params;
+        const result = await sellKgService.getOneSellKgFromDB(id);
+        if (!result) {
+            throw new Error("No Data Avilable");
+        }
+        res.status(200).json({
+            success: true,
+            statusCode: 200,
+            message: 'Sell Kg Created Successfully',
+            data: result
+        });
+    } catch (error) {
+        next(error)
+    }
+}
 
 const getAllSellKg = async(req : Request, res : Response, next : NextFunction) =>{
     try {
@@ -121,5 +138,6 @@ export const  sellKgController = {
     updateSellKg,
     deleteFromDB,
     searchRoute,
-    availableForCourier
+    availableForCourier,
+    getOneSellKg
 } 

@@ -12,6 +12,7 @@ const UserSchema = z.object({
     isBlocked: z.string().optional(), // Added field 
     isSuspend: z.string().optional(), // Added field 
     isTwentyPercent : z.boolean().optional(),
+    address   : z.string().optional(),
     isSubscription : z.boolean().optional(),
     createdAt: z.date().optional(),
     updatedAt: z.date().optional(),
@@ -35,6 +36,7 @@ const UpdateUserValidationSchema = z.object({
     password: z.string().min(6, "Password must be at least 6 characters long").optional(),
     phone: z.string().min(1, "Phone number is required").optional(),
     role: z.enum(["admin", "user", "super_admin"]).optional(),
+    address   : z.string().optional(),
     subscription: z.boolean().optional(),
     isBlocked: z.boolean().optional(), // Added field
     isSuspend: z.boolean().optional(), // Added field

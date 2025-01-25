@@ -16,12 +16,12 @@ export const CreateGeneralValidationSchema = z.object({
 export const UpdateGeneralValidationSchema = z.object({
   body: z.object({
     platformName: z.string().optional(),
-    contactEmail: z.string().email('Invalid email address').optional(),
-    mainLanguage: z.enum(['French', 'English', 'Spanish']).optional(),
-    landingPageVideoLink: z.string().url('Invalid URL format').optional(),
-    iTravelVideoLink: z.string().url('Invalid URL format').optional(),
-    iSendVideoLink: z.string().url('Invalid URL format').optional(),
-    iShopVideoLink: z.string().url('Invalid URL format').optional(),
+    contactEmail: z.string().optional(),
+    mainLanguage: z.string().optional(),
+    landingPageVideoLink: z.string().optional(),
+    iTravelVideoLink: z.string().optional(),
+    iSendVideoLink: z.string().optional(),
+    iShopVideoLink: z.string().optional(),
   }),
 });
 

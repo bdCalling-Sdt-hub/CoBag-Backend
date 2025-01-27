@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { coBagSkyService } from "./coBagSky.service";
+import catchAsync from "../../../utils/catchAsync";
 
 
 const createSubscription = async (req : Request, res : Response, next : NextFunction) => {
@@ -74,10 +75,25 @@ const deleteSubscription = async(req : Request, res : Response, next : NextFunct
     }
 }
 
+const getOneSubscription = catchAsync(async (req : Request, res : Response, next : NextFunction) => {
+    const {id} = req.params;
+    const result = await coBagSkyService.getOneSubscriptionFromDB(id);
+    if (!result) {
+        throw new Error("Subscription Not Deleted Successfuly");
+    }
+    res.status(200).json({
+        success: true,
+        statusCode: 200,
+        message: 'Update subscription successfully',
+        data: result
+      });
+})
+
  export const coBagController = {
     createSubscription,
     getAllData,
     updateSubscription,
-    deleteSubscription
+    deleteSubscription,
+    getOneSubscription
 }
 

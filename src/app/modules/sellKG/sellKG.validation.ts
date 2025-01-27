@@ -14,7 +14,7 @@ const CreateRouteValidationSchema = z.object({
     arrivalDate: z.string().min(1, 'Arrival date is required'),
     departureTime: z.string().min(1, 'Departure time is required'),
     arrivalTime: z.string().min(1, 'Arrival time is required'),
-    availableToBeCourier: z.string(),
+    availableToBeCourier: z.string().optional(),
     maxpurchAmountAdvance: z.string(),
     handLuggage: z.string().min(0).optional(),
     checkedBaggage: z.string().min(0).optional(),

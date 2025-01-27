@@ -20,7 +20,6 @@ export type TUser = {
     isverified: boolean; // Added field
     isSuspend: boolean; // Added field
     address : string;
-
     isTwentyPercent ?: boolean, 
     isSubscription?: boolean,  
     createdAt?: Date;

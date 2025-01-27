@@ -39,9 +39,15 @@ const deleteSubscriptionFromDB = async (id: string) => {
     }
     return result
 }
+
+const getOneSubscriptionFromDB = async (id: string) => {
+    const result = await SubscriptionModel.findById(id);
+    return result;
+} 
 export const coBagSkyService = {
     createSubscription,
     getAllSubscriptionFromDB,
     updateSubscriptionFromDB,
-    deleteSubscriptionFromDB
+    deleteSubscriptionFromDB,
+    getOneSubscriptionFromDB
 }

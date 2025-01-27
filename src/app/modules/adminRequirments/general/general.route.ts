@@ -7,7 +7,7 @@ import { USER_ROLE } from '../../user/user.constant';
 import auth from '../../../middlewares/auth';
 
 const router = express.Router();
-const UPLOADS_FOLDER = 'uploads/logo';
+const UPLOADS_FOLDER = 'uploads/PlatformLogo';
 const upload = fileUploadHandler(UPLOADS_FOLDER);
 router.post(
   '/create',

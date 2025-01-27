@@ -30,4 +30,10 @@ router.delete(
     coBagController.deleteSubscription
 )
 
+router.get(
+    '/read/:id',
+    auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.super_admin),
+    coBagController.getOneSubscription
+)
+
 export const coBagSkyRouter = router;

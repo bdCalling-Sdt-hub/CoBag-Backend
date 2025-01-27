@@ -25,7 +25,6 @@ const updateGeneral = async (req: Request, res: Response, next : NextFunction) =
         const payload = req.body
         console.log(req.file)
         if (req.file) {
-            
             payload.PlatformLogo = `/uploads/PlatformLogo/${req.file.filename}`;
           }
         const result = await generalService.updateGeneralFromDB(payload)

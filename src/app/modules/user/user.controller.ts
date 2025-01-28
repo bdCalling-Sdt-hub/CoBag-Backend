@@ -68,7 +68,7 @@ const getOneUser = async (req: Request, res: Response, next: NextFunction) => {
 
 const updateUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { id } = req.params
+   const id = req.user.userId;
     const payload = req.body;
     const files = req.files as {
       profileImage?: { filename: string }[];
@@ -76,9 +76,7 @@ const updateUser = async (req: Request, res: Response, next: NextFunction) => {
       proofOfAddress?: { filename: string }[];
       RIB?: { filename: string }[];
     };
-    
-    console.log("Update Body" , payload)
-    console.log("Update Files", files)
+
     if (files?.profileImage && files.profileImage[0]?.filename) {
       payload.profileImage = `/uploads/users/${files.profileImage[0].filename}`;
     }

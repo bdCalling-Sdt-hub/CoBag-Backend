@@ -7,11 +7,9 @@ import catchAsync from '../utils/catchAsync';
 import UserModel from '../modules/user/user.model';
 import { TUserRole } from '../modules/user/user.interface';
 
-const auth = (...requiredRoles:  TUserRole[]) => {
-  console.log(requiredRoles)
+const auth = (...requiredRoles: TUserRole[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const rawToken = req.headers.authorization;
-    console.log("Raw Token", rawToken)
     const token = rawToken?.split(' ')[1];
     // checking if the token is missing
     if (!token) {
@@ -27,15 +25,13 @@ const auth = (...requiredRoles:  TUserRole[]) => {
 
 
     const { role, userId } = decoded;
-    console.log("from auth", role, userId)
-
-    // checking if the user is exist
+    console.log("User Id", userId)
     const user = await UserModel.findById(userId);
 
-    if (!user) {
-      throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
-    }
 
+    if (!user) {
+      throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized!');
+    }
     if (requiredRoles && !requiredRoles.includes(role)) {
       return res.status(401).send({
         "success": false,

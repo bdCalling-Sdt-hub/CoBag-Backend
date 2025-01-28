@@ -80,7 +80,7 @@ const updateUserFromDB = async (id: string, payload: Partial<TUser>,) => {
   // console.log( "pAYLOAD" ,payload)
 
 
-  const result = await UserModel.findByIdAndUpdate(id, payload, { new: true, runValidators: true })
+  const result = await UserModel.findByIdAndUpdate(id, payload, { new: true})
   // console.log("User Service" , result)
   if (!result) {
     throw new Error("Profile Not Updated Successfully");

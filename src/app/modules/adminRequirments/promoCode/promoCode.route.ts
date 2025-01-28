@@ -25,5 +25,11 @@ router.patch(
     validateRequest(promoCodeValidation.updatePromoCodeSchema),
     promoCodeController.updateProme
 )
+router.get(
+    "/read/:id",
+    auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.super_admin),
+    promoCodeController.getOnePromoCode
+)
+
 
 export const promoCodeRoute = router;

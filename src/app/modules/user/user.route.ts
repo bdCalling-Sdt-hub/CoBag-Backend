@@ -14,7 +14,7 @@ const UPLOADS_FOLDER_USER_DOCUMENTS = 'uploads/users';
 const upload = fileUploadHandler(UPLOADS_FOLDER_USER_DOCUMENTS)
 
 router.patch(
-  '/update/:id',
+  '/update',
   auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.super_admin),
   validateRequest(userValidation.UpdateUserValidationSchema),
   upload.fields([

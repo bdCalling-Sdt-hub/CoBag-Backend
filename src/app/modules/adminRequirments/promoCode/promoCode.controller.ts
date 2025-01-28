@@ -57,8 +57,27 @@ const updateProme = async(req : Request, res : Response, next : NextFunction) =>
     }
 }
 
+const getOnePromoCode = async(req : Request, res : Response, next : NextFunction) => {
+    try {
+        const {id} = req.params
+        const result = await promoCodeService.getOnePromoCodeFromDB(id);
+        if (!result) {
+            throw new Error("Update Not perform");
+        }
+        res.status(200).json({
+            success: true,
+            statusCode: 200,
+            message: 'update successfully Done',
+            data: result
+          });
+    } catch (error) {
+        next(error)
+    }
+}
+
 export const promoCodeController = {
     createPromoCode,
     getAllPromoCode,
-    updateProme
+    updateProme,
+    getOnePromoCode
 }

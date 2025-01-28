@@ -60,9 +60,7 @@ export const webhookHandler = async (req: Request, res: Response, next: NextFunc
         };
   
         console.log('Saving Payment Data:', paymentData);
-      }
-      
-
+      }    
       try {
         if ('metadata' in dataObject) {
           if (dataObject?.metadata?.isTwentyPercent === "true") {

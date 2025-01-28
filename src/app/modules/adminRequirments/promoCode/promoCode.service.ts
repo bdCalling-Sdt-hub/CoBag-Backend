@@ -66,8 +66,15 @@ const updatePromoCode = async (id: string, payload: TPromoCode) => {
   return result;
 
 }
+
+const getOnePromoCodeFromDB = async (id : string) => {
+    const result = await PromoCodeModel.findById(id);
+    return result;
+}
+
 export const promoCodeService = {
   createPromoCodeFromDB,
   getAllPromoCodeFromDB,
   updatePromoCode,
+  getOnePromoCodeFromDB
 } 

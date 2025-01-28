@@ -16,7 +16,7 @@ const UserSchema: Schema = new Schema(
       default : ""
     },
     ethanDocuments: {
-      type: String
+      type: String,
     },
     isTraveler : { type : String, default : true},
     proofOfAddress: {

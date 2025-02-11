@@ -164,7 +164,28 @@ const getAvailableForCourier = async (payload: TRoute) => {
 };
 
 
-
+const cancleMessageConnection = async (userId : string, sellKgId : string) => {
+  const result = await UserModel.findOne({_id : userId, sellKgId : sellKgId});
+  if (!result) {
+    throw new Error("no data found");  
+  }
+  if (result.sellKgId === sellKgId) {
+    result.sellKgId = "";
+    await result.save();
+  }
+  return result
+}
+const createMessageConnection = async (userId : string, sellKgId : string) => {
+  const result = await UserModel.findOne({_id : userId});
+  if (!result) {
+    throw new Error("no data found");  
+  }
+  if (result.sellKgId) {
+    result.sellKgId = sellKgId;
+    await result.save();
+  }
+  return result
+}
 
 export const sellKgService = {
   createSellFromDB,
@@ -173,6 +194,7 @@ export const sellKgService = {
   getAvailableForCourier,
   deleteSellFromDB,
   searchRouteFromDB,
-  getOneSellKgFromDB
-
+  getOneSellKgFromDB,
+  cancleMessageConnection,
+  createMessageConnection
 }

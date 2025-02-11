@@ -52,7 +52,16 @@ router.delete(
     
     sellKgController.deleteFromDB
 )
-
+router.get(
+    "/create-message-connection/:sellKgId",
+    auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.super_admin),
+    sellKgController.createMessageConnection
+)
+router.get(
+    "/cancle-message-connection/:sellKgId",
+    auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.super_admin),
+    sellKgController.cancleMessageConnection
+)
 
 
 

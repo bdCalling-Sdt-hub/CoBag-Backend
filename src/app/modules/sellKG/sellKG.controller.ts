@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { sellKgService } from "./sellKG.service";
 import { TRoute } from "./sellKG.interface";
+import catchAsync from "../../utils/catchAsync";
 
 
 const createSell = async (req : Request, res : Response, next : NextFunction) => {
@@ -132,6 +133,35 @@ const availableForCourier = async (req  : Request, res : Response, next : NextFu
         next(error)
     }
 } 
+
+const cancleMessageConnection = catchAsync(async (req , res , next) => {
+    const {userId} = req.user;
+    const {sellKgId} = req.params;
+    const result = await sellKgService.cancleMessageConnection(userId, sellKgId);
+    if (!result) {
+        throw new Error("No Data Avilable");
+    }
+    res.status(200).json({
+        success: true,
+        statusCode: 200,
+        message: 'message connection canceled Successfully',
+        data: result
+    });
+})
+const createMessageConnection = catchAsync(async (req , res , next) => {
+    const {userId} = req.user;
+    const {sellKgId} = req.params;
+    const result = await sellKgService.createMessageConnection(userId, sellKgId);
+    if (!result) {
+        throw new Error("No Data Avilable");
+    }
+    res.status(200).json({
+        success: true,
+        statusCode: 200,
+        message: 'message connection Created Successfully',
+        data: result
+    });
+})
 export const  sellKgController = {
     createSell,
     getAllSellKg,
@@ -139,5 +169,7 @@ export const  sellKgController = {
     deleteFromDB,
     searchRoute,
     availableForCourier,
-    getOneSellKg
+    getOneSellKg,
+    cancleMessageConnection,
+    createMessageConnection,
 } 

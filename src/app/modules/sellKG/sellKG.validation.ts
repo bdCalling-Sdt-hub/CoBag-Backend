@@ -19,7 +19,7 @@ const CreateRouteValidationSchema = z.object({
     handLuggage: z.string().min(0).optional(),
     checkedBaggage: z.string().min(0).optional(),
     totalSpace : z.number().optional(),
-    price : z.number().optional(),
+    price : z.string().optional(),
     isTwentyPercent : z.boolean().optional(),
     isEightyPercent : z.boolean().optional(),
     courierOptions: z

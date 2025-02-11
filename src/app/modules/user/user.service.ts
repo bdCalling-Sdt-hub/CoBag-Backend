@@ -6,19 +6,70 @@ import config from "../../config";
 import { createToken } from "./user.utils";
 import nodemailer from "nodemailer";
 import ReviewModel from "../review/review.model";
+import crypto from "crypto";
+// const createUserIntoDB = async (userData: TUser) => {
+//   const user = await UserModel.findOne({ email: userData.email })
+
+
+//   if (user) {
+//     throw new Error("User exiest");
+
+//   }
+//   console.log(user)
+
+
+//   const newUser = await UserModel.create(userData)
+
+//   // Create the JWT payload
+//   const jwtPayload = {
+//     userId: newUser._id,
+//     role: newUser.role,
+//   };
+
+//   // Generate access token
+//   const accessToken = createToken(
+//     jwtPayload,
+//     config.jwt_access_secret as string,
+//     config.jwt_access_expires_in as string,
+//   );
+
+//   return {
+//     token: accessToken,
+//     data : newUser
+//   }
+// };
+
+
+
+const generateReferralCode = () => {
+  return crypto
+    .randomBytes(6) // 6 bytes = 12 hex characters
+    .toString("hex")
+    .toUpperCase()
+    .replace(/[IO]/g, "X") // Avoid characters that look similar
+    .slice(0, 12); // Ensure it's exactly 12 characters
+};
 
 const createUserIntoDB = async (userData: TUser) => {
-  const user = await UserModel.findOne({ email: userData.email })
-
+  const user = await UserModel.findOne({ email: userData.email });
 
   if (user) {
-    throw new Error("User exiest");
-
+    throw new Error("User exists");
   }
-  console.log(user)
 
+  const referralCode = generateReferralCode();
+  userData.referCode = referralCode;
 
-  const newUser = await UserModel.create(userData)
+  const referredBy = userData.referredBy;
+  console.log("referredBy" , referredBy)
+  if (referredBy) {
+    const referredByUser = await UserModel.findOne({ referCode: referredBy });
+    console.log("referredByUser" , referredByUser)
+    if (referredByUser) {
+      userData.referredBy = referredByUser._id ;
+    }
+  }
+  const newUser = await UserModel.create(userData);
 
   // Create the JWT payload
   const jwtPayload = {
@@ -35,8 +86,8 @@ const createUserIntoDB = async (userData: TUser) => {
 
   return {
     token: accessToken,
-    data : newUser
-  }
+    data: newUser,
+  };
 };
 
 const getAllUserFromDB = async () => {
@@ -48,7 +99,7 @@ const getAllUserFromDB = async () => {
   return result;
 }
 
-const getOneUserByIdFromDB = async (id: string) => {
+const getOneUserReviewByIdFromDB = async (id: string) => {
 
   const result = await UserModel.findById({ _id: id });
    // Find all reviews for the given receiverId
@@ -253,15 +304,41 @@ const makeAdminFromDB = async (payload: Partial<TUser>) => {
 
 }
 
+
+const getAllAdminsFromDB = async () => {
+  const result = await UserModel.find({ role: "admin", isBlocked: false });
+  return result;
+};
+const getAllBlockedAdminsFromDB = async () => {
+  const result = await UserModel.find({ role: "admin", isBlocked: true });
+  return result;
+};
+
+const deleteAdminFromDB = async (id: string) => {
+  const result = await UserModel.findByIdAndDelete(id);
+  return result
+}
+
+
+
+const getOneUserFromDB = async (id: string) => {
+  const result = await UserModel.findById(id);
+  return result
+}
+
 export const userService = {
   createUserIntoDB,
   loginUser,
   updateUserFromDB,
   getAllUserFromDB,
   blockUserfromDB,
-  getOneUserByIdFromDB,
+  getOneUserReviewByIdFromDB,
   suspendUserfromDB,
   forgetPasswordFromDB,
   resetPasswordFromDB,
   makeAdminFromDB,
+  getAllAdminsFromDB,
+  getAllBlockedAdminsFromDB,
+  deleteAdminFromDB,
+  getOneUserFromDB
 }

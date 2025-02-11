@@ -63,10 +63,12 @@ export const webhookHandler = async (req: Request, res: Response, next: NextFunc
       }    
       try {
         if ('metadata' in dataObject) {
+          // console.log("metadata in dataObject" , dataObject?.metadata)
           if (dataObject?.metadata?.isTwentyPercent === "true") {
             
             const sellKgId = dataObject?.metadata?.sellKgId;
             const senderId = dataObject?.metadata?.senderId;
+            console.log("senderId" , senderId, "sellKgId" , sellKgId);
             // Fetch the user by ID
             const user = await UserModel.findById(senderId);
             const sellPost = await SellKgModel.findById(sellKgId);
@@ -75,6 +77,7 @@ export const webhookHandler = async (req: Request, res: Response, next: NextFunc
                 // Update isTwentyPercent for both UserModel and SellKgModel
                 user.isTwentyPercent = true;
                 sellPost.isTwentyPercent = true;
+                user.sellKgId = sellKgId;
         
                 // Save the updated user and sellPost
                 await user.save();
@@ -86,13 +89,17 @@ export const webhookHandler = async (req: Request, res: Response, next: NextFunc
         }
           if (dataObject?.metadata?.isEightyPercent === "true") {
             const sellKgId = dataObject?.metadata?.sellKgId;
+            const senderId = dataObject?.metadata?.senderId;
+            const user = await UserModel.findById(senderId);
             // Fetch the user by ID
             const sellPost = await SellKgModel.findById(sellKgId);
-            if ( sellPost) {
+            if (user && sellPost) {
                 // Update isTwentyPercent for both UserModel and SellKgModel
                 sellPost.isEightyPercent = true;
+                user.sellKgId = sellKgId;
                 // Save the updated user and sellPost
                 await sellPost.save();
+                await user.save();
                 const payment = new PaymentModel(paymentData);
                 await payment.save();
                 console.log('Payment saved successfully:', payment);

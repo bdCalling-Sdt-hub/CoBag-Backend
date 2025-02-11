@@ -20,7 +20,11 @@ export type TUser = {
     isverified: boolean; // Added field
     isSuspend: boolean; // Added field
     address : string;
+    referCode : string;
+    referredBy : string;
+    sellKgId : string;
     isTwentyPercent ?: boolean, 
+    hasCompletedFirstTransaction ?: boolean,
     isSubscription?: boolean,  
     createdAt?: Date;
     updatedAt?: Date;

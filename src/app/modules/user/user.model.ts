@@ -40,6 +40,13 @@ const UserSchema: Schema = new Schema(
       enum: ["admin", "user", "super_admin"],
       default: "user",
     },
+    referCode : {
+      type : String,
+      unique : true,
+    },
+    hasCompletedFirstTransaction : {type : Boolean, default : false},
+    referredBy : { type: Schema.Types.ObjectId, ref: 'User' },
+    sellKgId : { type: Schema.Types.ObjectId, ref: 'Route' },
     isBlocked: { type: Boolean, default: false }, // Added field
     isverified: { type: Boolean, default: false }, // Added field
     isSuspend: { type: Boolean, default: false }, // Added field

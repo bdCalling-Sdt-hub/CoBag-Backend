@@ -48,10 +48,10 @@ const getAllUser = async (req: Request, res: Response, next: NextFunction) => {
   }
 }
 
-const getOneUser = async (req: Request, res: Response, next: NextFunction) => {
+const getOneUserReview = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params
-    const result = await userService.getOneUserByIdFromDB(id);
+    const result = await userService.getOneUserReviewByIdFromDB(id);
     if (!result) {
       throw new Error("Get a Single User");
     }
@@ -235,6 +235,61 @@ const makeAdmin = async (req: Request, res: Response, next: NextFunction) => {
   }
 }
 
+const getAllAdmins = catchAsync(async (req, res) => {
+  const result = await userService.getAllAdminsFromDB();
+  if (!result) {
+    throw new Error("No Admin Found");
+  }
+  return res.status(200).json({
+    statusCode: 200,
+    success: true,
+    message: "All Admins Found",
+    data: result
+  })
+})
+
+const getAllBlockedAdmins = catchAsync(async (req, res) => {
+  const result = await userService.getAllBlockedAdminsFromDB();
+  if (!result) {
+    throw new Error("No Blocked Admin Found");
+  }
+  return res.status(200).json({
+    statusCode: 200,
+    success: true,
+    message: "All Blocked Admins Found",
+    data: result
+  })
+})
+
+const deleteAdmin = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await userService.deleteAdminFromDB(id);
+  if (!result) {
+    throw new Error("Delete User Failed");
+  }
+  return res.status(200).json({
+    statusCode: 200,
+    success: true,
+    message: "User Deleted Successfully",
+    data: result
+  })
+})
+
+
+const getOneUser = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await userService.getOneUserFromDB(id);
+  if (!result) {
+    throw new Error("No User Found");
+  }
+  return res.status(200).json({
+    statusCode: 200,
+    success: true,
+    message: "User Found",
+    data: result
+  })
+})
+
 export const userController = {
   createUser,
   loginUser,
@@ -245,6 +300,10 @@ export const userController = {
   suspendUser,
   forgetPassword,
   resetPassword,
-  getOneUser,
-  makeAdmin
+  getOneUserReview,
+  makeAdmin,
+  getAllAdmins,
+  getAllBlockedAdmins,
+  deleteAdmin,
+  getOneUser
 };

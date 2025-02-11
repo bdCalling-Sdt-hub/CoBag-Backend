@@ -13,6 +13,7 @@ const router = express.Router()
 const UPLOADS_FOLDER_USER_DOCUMENTS = 'uploads/users';
 const upload = fileUploadHandler(UPLOADS_FOLDER_USER_DOCUMENTS)
 
+
 router.patch(
   '/update',
   auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.super_admin),
@@ -38,8 +39,13 @@ router.patch(
   userController.updateUser
 )
 router.get(
-  '/get-user/:id',
+  '/get-user-review-avarege/:id',
   auth( USER_ROLE.admin, USER_ROLE.super_admin),
+  userController.getOneUserReview
+)
+router.get(
+  '/get-user/:id',
+  auth( USER_ROLE.admin, USER_ROLE.super_admin, USER_ROLE.user),
   userController.getOneUser
 )
 router.post(
@@ -91,11 +97,20 @@ router.post(
   userController.makeAdmin,
 );
 
-
-
-
-
-
-
+router.get(
+  '/get-all-admin', 
+  auth(USER_ROLE.super_admin),
+  userController.getAllAdmins,
+);
+router.get(
+  '/get-all-blocked-admin', 
+  auth(USER_ROLE.super_admin),
+  userController.getAllBlockedAdmins,
+);
+router.delete(
+  '/delete-admin/:id', 
+  auth(USER_ROLE.super_admin ),
+  userController.deleteAdmin,
+);
 
 export const userRoutes = router;

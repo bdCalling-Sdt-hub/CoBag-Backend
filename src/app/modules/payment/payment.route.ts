@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.post(
     '/create-checkout-session',
-    // auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.super_admin),
+    auth( USER_ROLE.admin, USER_ROLE.user, USER_ROLE.super_admin),
     validateRequest(paymentValidation.PaymentSchema),
     paymentController.createCheckoutSessionHandler
     );

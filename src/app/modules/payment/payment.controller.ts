@@ -94,10 +94,28 @@ export const webhookHandler = async (req: Request, res: Response, next: NextFunc
             // Fetch the user by ID
             const sellPost = await SellKgModel.findById(sellKgId);
             if (user && sellPost) {
+              
                 // Update isTwentyPercent for both UserModel and SellKgModel
                 sellPost.isEightyPercent = true;
                 user.sellKgId = sellKgId;
                 // Save the updated user and sellPost
+                console.log( "user.referredBy .kasbdfewj;hfk" ,user.referredBy, user.hasCompletedFirstTransaction)
+                if  ( user.referredBy  && !user.hasCompletedFirstTransaction) {
+                  const referredUser = await UserModel.findById(user.referredBy);
+                  if (!referredUser) {
+                    throw new Error(" User not found");
+                    
+                  }
+                  console.log("Hit")
+                  console.log(referredUser)
+                  user.isTwentyPercent = true;
+                  user.hasCompletedFirstTransaction = true;
+                  referredUser.subscription = true;
+                  await referredUser.save();
+                  
+
+                    
+                }
                 await sellPost.save();
                 await user.save();
                 const payment = new PaymentModel(paymentData);

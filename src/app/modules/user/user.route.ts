@@ -113,4 +113,10 @@ router.delete(
   userController.deleteAdmin,
 );
 
+router.get(
+  'verify-user/:id',
+  auth( USER_ROLE.admin, USER_ROLE.super_admin),
+  userController.verifyUser,
+
+)
 export const userRoutes = router;

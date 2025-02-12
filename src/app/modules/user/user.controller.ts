@@ -290,6 +290,20 @@ const getOneUser = catchAsync(async (req, res) => {
   })
 })
 
+const verifyUser = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await userService.verifyUserFromDB(id);
+  if (!result) {
+    throw new Error("User Not Verified");
+  }
+  return res.status(200).json({
+    statusCode: 200,
+    success: true,
+    message: "User Verified",
+    data: result
+  })
+})
+
 export const userController = {
   createUser,
   loginUser,
@@ -305,5 +319,6 @@ export const userController = {
   getAllAdmins,
   getAllBlockedAdmins,
   deleteAdmin,
-  getOneUser
+  getOneUser,
+  verifyUser
 };

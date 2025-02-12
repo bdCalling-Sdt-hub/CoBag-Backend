@@ -326,6 +326,15 @@ const getOneUserFromDB = async (id: string) => {
   return result
 }
 
+const verifyUserFromDB = async (id: string) => {
+  const result = await UserModel.findById(id);
+  if (!result) {
+    throw new Error("Not Found");
+  }
+  result.isverified = true;
+  await result.save();
+  return result
+}
 export const userService = {
   createUserIntoDB,
   loginUser,
@@ -340,5 +349,6 @@ export const userService = {
   getAllAdminsFromDB,
   getAllBlockedAdminsFromDB,
   deleteAdminFromDB,
-  getOneUserFromDB
+  getOneUserFromDB,
+  verifyUserFromDB
 }

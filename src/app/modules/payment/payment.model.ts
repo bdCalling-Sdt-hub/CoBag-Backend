@@ -4,6 +4,7 @@ import { TPayment } from './paymemt.interface';
 const PaymentSchema: Schema = new Schema(
   {
     amount: { type: Number, required: true },
+    cobagProfit : {type : Number, required : true},
     senderId: { type: Schema.Types.ObjectId, ref: 'User' }, // Sender ID
     receiverId: { type: Schema.Types.ObjectId, ref: 'User'}, // Receiver ID
     sellKgId: { type: Schema.Types.ObjectId, ref: 'Route'}, // Route / post ID

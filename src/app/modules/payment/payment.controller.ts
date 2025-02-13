@@ -1,10 +1,11 @@
 import {  NextFunction, Request, Response } from 'express';
-import { createCheckoutSession } from './payment.service';
+import { createCheckoutSession, paymentService } from './payment.service';
 import Stripe from 'stripe';
 import stripe from 'stripe';
 import PaymentModel from './payment.model';
 import SellKgModel from '../sellKG/sellKG.model';
 import UserModel from '../user/user.model';
+import catchAsync from '../../utils/catchAsync';
 
 export const createCheckoutSessionHandler = async (req: Request, res: Response, next : NextFunction) => {
   const { amount, currency } = req.body;
@@ -52,6 +53,7 @@ export const webhookHandler = async (req: Request, res: Response, next: NextFunc
           stripePaymentIntentId: session.payment_intent as string || '',
           status: 'completed',
           senderId : dataObject?.metadata?.senderId,
+          cobagProfit : dataObject?.metadata?.cobagProfit,
           isTwentyPercent : dataObject?.metadata?.isTwentyPercent,
           isEightyPercent : dataObject?.metadata?.isEightyPercent,
           isSubscriptionPay : dataObject?.metadata?.isSubscriptionPay,
@@ -158,7 +160,21 @@ export const webhookHandler = async (req: Request, res: Response, next: NextFunc
 
 
 
+const getMonthlyData = catchAsync(async (req, res, next ) => {
+  const result = await paymentService.getMonthlyData();
+  if (!result) {
+    throw new Error("No Data Found!");
+  }
+  res.status(200).json({
+    success: true,
+    statusCode: 200,
+    message: 'Monthly Data Found',
+    data: result
+  })
+})
+
 export const paymentController = {
   createCheckoutSessionHandler,
-  webhookHandler
+  webhookHandler,
+  getMonthlyData,
 }

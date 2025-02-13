@@ -20,4 +20,12 @@ router.post(
     webhookHandler
 );
 
+router.get(
+    "/monthly-progress",
+    auth(USER_ROLE.super_admin,  USER_ROLE.user),
+    paymentController.getMonthlyData
+ )
+
+
+
 export const paymentRoute = router;

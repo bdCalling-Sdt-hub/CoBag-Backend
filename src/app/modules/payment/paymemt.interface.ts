@@ -9,6 +9,7 @@ export interface TPayment {
   status: string; // Payment status (e.g., "pending", "succeeded")
   isTwentyPercent ?: boolean, 
   isEightyPercent ?: boolean,
-  isSubscriptionPay?: boolean,  
+  isSubscriptionPay?: boolean,
+  cobagProfit : number,  
   stripeEvent: any;
 }

@@ -12,6 +12,7 @@ import { promoCodeRoute } from '../modules/adminRequirments/promoCode/promoCode.
 import { coBagSkyRouter } from '../modules/adminRequirments/coBagSky/coBagSky.route';
 import { generalRouter } from '../modules/adminRequirments/general/general.route';
 import { reviewRouter } from '../modules/review/review.route';
+import { reportRoutes } from '../modules/report/report.route';
 const router = Router();
 
 const moduleRoutes = [
@@ -67,6 +68,10 @@ const moduleRoutes = [
   {
     path: '/review',
     route: reviewRouter,
+  },
+  {
+    path: '/report',
+    route: reportRoutes,
   },
   
 ];

@@ -47,6 +47,8 @@ const UserSchema: Schema = new Schema(
     hasCompletedFirstTransaction : {type : Boolean, default : false},
     referredBy : { type: Schema.Types.ObjectId, ref: 'User' },
     sellKgId : { type: Schema.Types.ObjectId, ref: 'Route' },
+    TotalEarning : {type : Number, default : 0},
+    CobagPrtofit : {type : Number, default : 0},
     isBlocked: { type: Boolean, default: false }, // Added field
     isverified: { type: Boolean, default: false }, // Added field
     isSuspend: { type: Boolean, default: false }, // Added field

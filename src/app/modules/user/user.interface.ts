@@ -22,6 +22,8 @@ export type TUser = {
     address : string;
     referCode : string;
     referredBy : string;
+    TotalEarning ? : number;
+    CobagPrtofit ? : number;
     sellKgId : string;
     isTwentyPercent ?: boolean, 
     hasCompletedFirstTransaction ?: boolean,

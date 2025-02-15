@@ -21,6 +21,7 @@ const OrderSchema: Schema = new Schema(
     stripePaymentIntentId: { type: String },
     orderSecret: { type: String, unique: true, default: generateOrderSecret },
     isSubscriptionPay : {type : Boolean},
+    isOrderDelivered : {type : Boolean, default : false},
     status: { type: String, default: 'pending' }, // Default status
     stripeEvent: { type: Schema.Types.Mixed }, // Allows storing JSON objects
   },

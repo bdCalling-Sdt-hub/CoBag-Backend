@@ -9,6 +9,7 @@ export interface TOrder {
     stripePaymentIntentId?: number; // Stripe PaymentIntent ID
     status: string; // Payment status (e.g., "pending", "succeeded")
     isTwentyPercent ?: boolean, 
+    isOrderDelivered ?: boolean, 
     isEightyPercent ?: boolean,
     isSubscriptionPay?: boolean,
     cobagProfit : number,  

@@ -20,3 +20,7 @@
 {"level":"info","message":"POST /payment/create-checkout-session - 200","timestamp":"2025-02-15T11:51:37.292Z"}
 {"level":"info","message":"POST /payment/webhook/stripe - 200","timestamp":"2025-02-15T11:52:04.865Z"}
 {"level":"info","message":"GET /payment/success?session_id=cs_test_a18wL5uMQ1ncaPBmLKEn4G4aEmfawtIrsati9Y3UmCNsnHY0RtmQ1UlP4O - 200","timestamp":"2025-02-15T11:52:06.450Z"}
+{"level":"info","message":"POST /payment/create-checkout-session - 200","timestamp":"2025-02-15T12:10:22.084Z"}
+{"level":"info","message":"POST /payment/webhook/stripe - 200","timestamp":"2025-02-15T12:10:48.000Z"}
+{"level":"info","message":"GET /payment/success?session_id=cs_test_a1nqhz8xHKwTRWQljpuAQ0yVAwvI59HJXM8tWcey6NeRQxcd5c6wJ9ycon - 200","timestamp":"2025-02-15T12:10:49.662Z"}
+{"level":"info","message":"POST /payment/webhook/stripe - 200","timestamp":"2025-02-15T12:46:01.137Z"}

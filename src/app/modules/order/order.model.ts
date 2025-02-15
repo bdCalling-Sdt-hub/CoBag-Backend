@@ -1,9 +1,15 @@
 import { Schema, model } from 'mongoose';
-import { TPayment } from './paymemt.interface';
+import { TOrder } from './order.interface';
+import crypto from 'crypto'; // Import the crypto module to generate the random string
+// Function to generate a random 25-character string
+function generateOrderSecret() {
+    return crypto.randomBytes(16).toString('hex').slice(0, 25); // Generates 25 characters
+  }
 
-const PaymentSchema: Schema = new Schema(
+const OrderSchema: Schema = new Schema(
   {
     amount: { type: Number, required: true },
+    fullAmount: { type: Number, required: true },
     cobagProfit : {type : Number, required : true},
     senderId: { type: Schema.Types.ObjectId, ref: 'User' }, // Sender ID
     travellerId: { type: Schema.Types.ObjectId, ref: 'User'}, // Receiver ID
@@ -13,6 +19,7 @@ const PaymentSchema: Schema = new Schema(
     currency: { type: String, required: true },
     stripeSessionId: { type: String },
     stripePaymentIntentId: { type: String },
+    orderSecret: { type: String, unique: true, default: generateOrderSecret },
     isSubscriptionPay : {type : Boolean},
     status: { type: String, default: 'pending' }, // Default status
     stripeEvent: { type: Schema.Types.Mixed }, // Allows storing JSON objects
@@ -22,5 +29,5 @@ const PaymentSchema: Schema = new Schema(
   }
 );
 
-const PaymentModel = model<TPayment>('Payment', PaymentSchema);
-export default PaymentModel;
+const OrderModel = model<TOrder>('Order', OrderSchema);
+export default OrderModel;

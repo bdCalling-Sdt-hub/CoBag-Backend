@@ -1,7 +1,7 @@
 export interface TPayment {
   amount: number; // Amount in smallest currency unit
   senderId : string; // Who send money 
-  reciverId : string; // who recive money
+  travellerId : string; // who recive money
   sellKgId : string; // who recive money
   currency: string; // e.g., "usd"
   stripeSessionId?: number; // Stripe Checkout Session ID

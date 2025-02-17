@@ -24,6 +24,10 @@ export type TUser = {
     referredBy : string;
     TotalEarning ? : number;
     CobagPrtofit ? : number;
+    travellerCount ? : number;
+    courierCount ? : number;
+    senderCount ? : number;
+    moneySpent ? : number;
     sellKgId : string;
     isTwentyPercent ?: boolean, 
     hasCompletedFirstTransaction ?: boolean,

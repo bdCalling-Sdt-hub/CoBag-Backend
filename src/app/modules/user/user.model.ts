@@ -49,6 +49,9 @@ const UserSchema: Schema = new Schema(
     sellKgId : { type: Schema.Types.ObjectId, ref: 'Route' },
     TotalEarning : {type : Number, default : 0},
     CobagPrtofit : {type : Number, default : 0},
+    travellerCount : {type : Number, default : 0},
+    courierCount : {type : Number, default : 0},
+    moneySpent : {type : Number, default : 0},
     isBlocked: { type: Boolean, default: false }, // Added field
     isverified: { type: Boolean, default: false }, // Added field
     isSuspend: { type: Boolean, default: false }, // Added field

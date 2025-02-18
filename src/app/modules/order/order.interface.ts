@@ -8,6 +8,7 @@ export interface TOrder {
     stripeSessionId?: number; // Stripe Checkout Session ID
     stripePaymentIntentId?: number; // Stripe PaymentIntent ID
     status: string; // Payment status (e.g., "pending", "succeeded")
+    orderStatus : string;
     isTwentyPercent ?: boolean, 
     isOrderDelivered ?: boolean, 
     isEightyPercent ?: boolean,

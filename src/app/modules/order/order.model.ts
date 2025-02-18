@@ -23,6 +23,7 @@ const OrderSchema: Schema = new Schema(
     isSubscriptionPay : {type : Boolean},
     isOrderDelivered : {type : Boolean, default : false},
     status: { type: String, default: 'pending' }, // Default status
+    orderStatus: { type: String, default: 'in_progress' }, // Default status
     stripeEvent: { type: Schema.Types.Mixed }, // Allows storing JSON objects
   },
   {

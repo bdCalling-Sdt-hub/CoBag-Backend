@@ -25,8 +25,13 @@ export type TUser = {
     TotalEarning ? : number;
     CobagPrtofit ? : number;
     travellerCount ? : number;
+    travellerFailedCount ? : number;
     courierCount ? : number;
     senderCount ? : number;
+    senderFailCount ? : number;
+    travellerSuccessRate ? : number;
+    senderSuccessRate ? : number;
+    courierSuccessRate ? : number;
     moneySpent ? : number;
     sellKgId : string;
     isTwentyPercent ?: boolean, 

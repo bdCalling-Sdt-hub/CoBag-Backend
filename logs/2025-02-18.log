@@ -1,0 +1,4 @@
+{"level":"info","message":"GET /uploads/users/congratulations-1737799959827.gif - 200","timestamp":"2025-02-18T09:32:09.545Z"}
+{"level":"info","message":"POST /payment/create-checkout-session - 200","timestamp":"2025-02-18T10:19:58.366Z"}
+{"level":"info","message":"POST /payment/webhook/stripe - 200","timestamp":"2025-02-18T10:20:27.281Z"}
+{"level":"info","message":"GET /payment/success?session_id=cs_test_a1lDWDrTEaiT3zxvLeMnPyxQ32JOYfrTJ4PUXsszARP51x3GwFVLfeZcMh - 200","timestamp":"2025-02-18T10:20:28.899Z"}

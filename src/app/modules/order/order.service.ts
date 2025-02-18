@@ -48,6 +48,13 @@ const readOrderById = async (id: string) => {
 //     return result;
 // }
 
+
+const calculateSuccessRate = (successCount: number, failedCount: number): number => {
+    const totalOrders = successCount + failedCount;
+    if (totalOrders === 0) return 0; // Avoid division by zero
+    return parseFloat(((successCount / totalOrders) * 100).toFixed(2)); // Format to 2 decimal places
+};
+
 const checkOrderWithSecretCode = async (secret: string, userId: string) => {
     // Find the order
     const result = await OrderModel.findOne({ orderSecret: secret, travellerId: userId });
@@ -84,7 +91,9 @@ const checkOrderWithSecretCode = async (secret: string, userId: string) => {
     const totalAmountSpent = senderOrders.reduce((sum, order) => sum + order.fullAmount, 0);
 
     user.senderCount = senderCount;
+    user.senderSuccessRate = calculateSuccessRate(senderCount, user.senderFailCount ?? 0);
     user.travellerCount = travellerCount;
+    user.senderSuccessRate = calculateSuccessRate(travellerCount, user.travellerFailedCount ?? 0);
     user.moneySpent = totalAmountSpent;
 
     // Update courier count if applicable
@@ -113,9 +122,20 @@ const usersenderAndTravelerOrders = async (userId : string , queryPerams : strin
     }
 }
 
+
+const allRunningOrder = async (page : number) => {
+    const limit = 10;
+    const skip = (page - 1) * limit;
+    const result = await OrderModel.find({isOrderDelivered : false})
+    .limit(limit)
+    .skip(skip);
+    return result;
+}
+
 export const orderService = {
      readOrder, 
      readOrderById,
      checkOrderWithSecretCode,
-     usersenderAndTravelerOrders
+     usersenderAndTravelerOrders,
+     allRunningOrder
 };

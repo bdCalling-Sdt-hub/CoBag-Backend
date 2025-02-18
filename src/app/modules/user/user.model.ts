@@ -50,6 +50,12 @@ const UserSchema: Schema = new Schema(
     TotalEarning : {type : Number, default : 0},
     CobagPrtofit : {type : Number, default : 0},
     travellerCount : {type : Number, default : 0},
+    senderCount :   {type : Number, default : 0},
+    travellerFailedCount : {type : Number, default : 0},
+    senderFailCount : {type : Number, default : 0},
+    travellerSuccessRate : {type : Number, default : 0},
+    senderSuccessRate : {type : Number, default : 0},
+    courierSuccessRate : {type : Number, default : 0},
     courierCount : {type : Number, default : 0},
     moneySpent : {type : Number, default : 0},
     isBlocked: { type: Boolean, default: false }, // Added field

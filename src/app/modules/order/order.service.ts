@@ -105,7 +105,7 @@ const checkOrderWithSecretCode = async (secret: string, userId: string) => {
     await user.save();
 
     return result;
-};
+};  
 
 
 const usersenderAndTravelerOrders = async (userId : string , queryPerams : string) => {
@@ -130,7 +130,7 @@ const allRunningOrder = async (page : number) => {
     .limit(limit)
     .skip(skip);
     return result;
-} 
+}
 
 export const orderService = {
      readOrder, 

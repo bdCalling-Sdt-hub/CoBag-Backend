@@ -130,7 +130,7 @@ const allRunningOrder = async (page : number) => {
     .limit(limit)
     .skip(skip);
     return result;
-}
+} 
 
 export const orderService = {
      readOrder, 

@@ -3,12 +3,13 @@ import SellKgModel from "../sellKG/sellKG.model";
 import UserModel from "../user/user.model";
 import OrderModel from "./order.model";
 
-const readOrder = async () => {
+const readOrders = async () => {
     const result = await OrderModel.find({});
     return result;
 }
 
 const readOrderById = async (id: string) => {
+    console.log( "ID servise", id)
     const result = await OrderModel.find({senderId : id});
     return result;
 }
@@ -49,6 +50,8 @@ const readOrderById = async (id: string) => {
 // }
 
 
+
+// Function to calculate success rate
 const calculateSuccessRate = (successCount: number, failedCount: number): number => {
     const totalOrders = successCount + failedCount;
     if (totalOrders === 0) return 0; // Avoid division by zero
@@ -123,17 +126,17 @@ const usersenderAndTravelerOrders = async (userId : string , queryPerams : strin
 }
 
 
-const allRunningOrder = async (page : number) => {
+const allRunningOrder = async (pages : number) => {
     const limit = 10;
-    const skip = (page - 1) * limit;
+    const skip = (pages - 1) * limit;
     const result = await OrderModel.find({isOrderDelivered : false})
     .limit(limit)
     .skip(skip);
     return result;
 }
-
+ 
 export const orderService = {
-     readOrder, 
+    readOrders, 
      readOrderById,
      checkOrderWithSecretCode,
      usersenderAndTravelerOrders,

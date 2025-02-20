@@ -13,6 +13,7 @@ import { coBagSkyRouter } from '../modules/adminRequirments/coBagSky/coBagSky.ro
 import { generalRouter } from '../modules/adminRequirments/general/general.route';
 import { reviewRouter } from '../modules/review/review.route';
 import { reportRoutes } from '../modules/report/report.route';
+import { orderRoutes } from '../modules/order/order.route';
 const router = Router();
 
 const moduleRoutes = [
@@ -73,7 +74,10 @@ const moduleRoutes = [
     path: '/report',
     route: reportRoutes,
   },
-  
+  {
+    path : '/order',
+    route : orderRoutes
+  }
 ];
 
 moduleRoutes.forEach((route) => router.use(route.path, route.route));

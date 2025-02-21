@@ -129,7 +129,7 @@ const usersenderAndTravelerOrders = async (userId : string , queryPerams : strin
 const allRunningOrder = async (pages : number) => {
     const limit = 10;
     const skip = (pages - 1) * limit;
-    const result = await OrderModel.find({isOrderDelivered : false})
+    const result = await OrderModel.find({isOrderDelivered : false}).populate("senderId").populate("travellerId")
     .limit(limit)
     .skip(skip);
     return result;

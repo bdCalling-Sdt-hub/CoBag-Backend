@@ -20,11 +20,13 @@ router.get(
 
 router.get(
     '/all-running-order',
+    auth(USER_ROLE.super_admin, USER_ROLE.admin, USER_ROLE.user),
     orderController.allRunningOrder
 )
 
 router.get(
     '/T&S-orders/:queryPerams',
+    auth(USER_ROLE.super_admin, USER_ROLE.admin, USER_ROLE.user),
     orderController.usersenderAndTravelerOrders
 )
 

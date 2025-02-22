@@ -129,10 +129,15 @@ const usersenderAndTravelerOrders = async (userId : string , queryPerams : strin
 const allRunningOrder = async (pages : number) => {
     const limit = 10;
     const skip = (pages - 1) * limit;
-    const result = await OrderModel.find({isOrderDelivered : false}).populate("senderId").populate("travellerId")
+    const result = await OrderModel.find({isOrderDelivered : false}).populate("senderId").populate("travellerId").populate("sellKgId")
     .limit(limit)
     .skip(skip);
     return result;
+}
+
+const singleOrder = async (id : string) => {
+    const result = await OrderModel.findById(id).populate("senderId").populate("travellerId").populate("sellKgId");
+    return result
 }
  
 export const orderService = {
@@ -140,5 +145,6 @@ export const orderService = {
      readOrderById,
      checkOrderWithSecretCode,
      usersenderAndTravelerOrders,
-     allRunningOrder
+     allRunningOrder,
+     singleOrder
 };

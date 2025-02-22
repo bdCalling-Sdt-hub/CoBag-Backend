@@ -76,10 +76,25 @@ const allRunningOrder = catchAsync(async (req, res, next) => {
     })
 })
 
+const singleOrder = catchAsync(async (req, res, next) => {
+    const {id} = req.params;
+    const result = await orderService.singleOrder(id);
+    if (!result) {
+        throw new Error("No Data Avilable");
+    }
+    res.status(200).json({
+        success: true,
+        statusCode: 200,
+        message: 'get one Order By Id Successfully',
+        data: result
+    })
+})
+
 export const orderController = {
     readOrders,
     readOrderById,
     checkOrderWithSecretCode,
     usersenderAndTravelerOrders,
-    allRunningOrder
+    allRunningOrder,
+    singleOrder
 }

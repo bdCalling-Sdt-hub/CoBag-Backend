@@ -30,5 +30,11 @@ router.get(
     orderController.usersenderAndTravelerOrders
 )
 
+router.get(
+    '/:id',
+    // auth(USER_ROLE.super_admin, USER_ROLE.admin, USER_ROLE.user),
+    orderController.singleOrder
+)
+
 
 export const orderRoutes = router;

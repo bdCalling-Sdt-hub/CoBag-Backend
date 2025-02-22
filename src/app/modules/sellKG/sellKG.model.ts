@@ -9,6 +9,7 @@ const RouteSchema: Schema = new Schema(
     transportType: { type: String, enum: ['direct', 'withCorrespondence'], required: true },
     ticket: { type: String },
     flightNumber: { type: String },
+    isOrderComfirmed: { type: Boolean, default: false },
     departureCity: { type: String, required: true },
     arrivalCity: { type: String, required: true },
     departureDate: { type: String, required: true },

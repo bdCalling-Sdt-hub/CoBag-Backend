@@ -7,6 +7,7 @@ export type TRoute = {
   ticket: string; // URL or file reference
   flightNumber?: string;
   departureCity: string;
+  isOrderComfirmed : boolean;
   arrivalCity: string;
   departureDate: string;
   arrivalDate: string;

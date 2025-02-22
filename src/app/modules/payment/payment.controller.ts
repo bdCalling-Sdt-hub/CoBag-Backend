@@ -115,6 +115,7 @@ export const webhookHandler = async (req: Request, res: Response, next: NextFunc
               session.startTransaction();
               // Update isTwentyPercent for both UserModel and SellKgModel
               sellPost.isEightyPercent = true;
+              
               user.sellKgId = sellKgId;
               // Save the updated user and sellPost
               console.log("user.referredBy : ", user.referredBy, user.hasCompletedFirstTransaction)
@@ -131,11 +132,14 @@ export const webhookHandler = async (req: Request, res: Response, next: NextFunc
                 referredUser.subscription = true;
                 await referredUser.save();
               }
-              await sellPost.save();
-              await user.save();
+              
+              
               const payment = new PaymentModel(paymentData);
               const fullAmount = calculateFullAmount(payment.amount, 80);
               await OrderModel.create({ ...paymentData, fullAmount: fullAmount });
+              sellPost.isOrderComfirmed = true;
+              await user.save();
+              await sellPost.save();
               await payment.save();
               console.log('Payment saved successfully:', payment);
               // If everything goes well, commit the transaction

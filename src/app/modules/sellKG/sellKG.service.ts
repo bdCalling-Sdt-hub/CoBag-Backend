@@ -1,5 +1,3 @@
-import mongoose from "mongoose";
-import PlatformModel from "../adminRequirments/platform/platform.model";
 import UserModel from "../user/user.model";
 import { TRoute } from "./sellKG.interface"
 import SellKgModel from "./sellKG.model"
@@ -30,7 +28,6 @@ const createSellFromDB = async (payload: TRoute) => {
     return  {
       result
     };
-  
 };
 
 
@@ -38,7 +35,7 @@ const createSellFromDB = async (payload: TRoute) => {
 
 const getAllSellKgFromDB = async () => {
 
-    const result = await SellKgModel.find({});
+    const result = await SellKgModel.find({isOrderComfirmed : false});
     if (!result || result.length === 0) {
       throw new Error("No Sell KG service Avilable ");
     }

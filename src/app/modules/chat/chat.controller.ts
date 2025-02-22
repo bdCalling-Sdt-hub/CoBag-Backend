@@ -71,8 +71,7 @@ const getMessage = async (req: Request, res: Response, next: NextFunction) => {
             message: "This User's all message  Successfully",
             data: message
         });
-    } catch (error) {
-        
+    } catch (error) { 
         next(error)
     }
 };

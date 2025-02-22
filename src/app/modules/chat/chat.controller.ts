@@ -72,6 +72,7 @@ const getMessage = async (req: Request, res: Response, next: NextFunction) => {
             data: message
         });
     } catch (error) {
+        
         next(error)
     }
 };

@@ -57,8 +57,8 @@ const createMessage = async (req: Request, res: Response, next: NextFunction) =>
     }
 };
 
-
-
+  
+  
 const getMessage = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { userId1, userId2 } = req.params;

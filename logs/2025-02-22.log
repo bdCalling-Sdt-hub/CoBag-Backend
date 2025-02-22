@@ -7,3 +7,6 @@
 {"level":"info","message":"GET /order/67b07fe40039c35fc6d069ab - 200","timestamp":"2025-02-22T09:39:16.002Z"}
 {"level":"info","message":"GET /order/67b07fe40039c35fc6d069ab - 200","timestamp":"2025-02-22T09:41:44.387Z"}
 {"level":"info","message":"GET /payment/monthly-progress - 200","timestamp":"2025-02-22T10:01:38.179Z"}
+{"level":"info","message":"POST /auth/login - 200","timestamp":"2025-02-22T11:23:33.063Z"}
+{"level":"info","message":"GET /admin-dashboard/showAllAgencyInAdmin - 200","timestamp":"2025-02-22T11:23:33.378Z"}
+{"level":"info","message":"GET /uploads/users/michael-dam-mez3pofgs_k-unsplash-1738060618263.jpg - 200","timestamp":"2025-02-22T11:23:33.407Z"}
